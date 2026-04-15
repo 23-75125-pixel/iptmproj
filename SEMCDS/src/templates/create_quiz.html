@@ -1,0 +1,789 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Create Quiz{% endblock %}
+{% block content %}
+<form id="quiz-editor-form" method="post">
+    <input type="hidden" name="quiz_id" value="{{ sample_quiz.id }}">
+    <input type="hidden" id="questions-payload" name="questions_payload" value="">
+
+    <section class="create-head">
+        <a class="back-link" href="{{ url_for('quiz_manager') }}">&larr; Back to Quizzes</a>
+        <div class="create-title-wrap">
+            <h1>{% if is_edit_mode %}Edit Quiz{% else %}Create New Quiz{% endif %}</h1>
+        </div>
+    </section>
+
+    <section class="panel create-panel">
+        <h2>Quiz Details</h2>
+        <div class="create-form-grid">
+            <label class="full">Title *
+                <input type="text" name="title" value="{{ sample_quiz.title }}" placeholder="e.g., Chapter 5 Review Quiz" required>
+            </label>
+            <label class="full">Description / Instructions
+                <textarea name="description" rows="4" placeholder="Instructions for students...">{{ sample_quiz.description }}</textarea>
+            </label>
+            <label>Subject / Topic
+                <input type="text" name="subject" value="{{ sample_quiz.subject }}" placeholder="e.g., Mathematics">
+            </label>
+            <label>Time Limit (minutes)
+                <input type="number" name="time_limit_minutes" value="{{ sample_quiz.time_limit_minutes }}" min="1">
+            </label>
+            <label>Scheduled Start
+                <input type="datetime-local" name="scheduled_start" value="{{ format_schedule_input(sample_quiz.scheduled_start) }}">
+            </label>
+            <label>Scheduled End
+                <input type="datetime-local" name="scheduled_end" value="{{ format_schedule_input(sample_quiz.scheduled_end) }}">
+            </label>
+            <div class="code-group">
+                <label>Quiz Code
+                    <input type="text" id="quiz-code-input" name="quiz_code" value="{{ sample_quiz.quiz_code }}" placeholder="e.g., ABC123">
+                </label>
+                <button id="regenerate-code-button" class="button secondary" type="button">Regenerate</button>
+            </div>
+            <label class="monitor-toggle">
+                <span class="switch">
+                    <input type="checkbox" name="monitoring_enabled" {% if sample_quiz.monitoring_enabled %}checked{% endif %}>
+                    <span class="switch-track"></span>
+                </span>
+                <span>
+                    <strong>Activity Monitoring</strong>
+                    <small>Log tab switches and suspicious actions</small>
+                </span>
+            </label>
+        </div>
+    </section>
+
+    <section class="question-toolbar">
+        <div>
+            <h2 id="question-count">Questions ({{ sample_quiz.questions|length if sample_quiz.questions else 1 }})</h2>
+        </div>
+        <div class="question-tools">
+            <input id="pdf-import-input" type="file" accept=".pdf,.txt" hidden>
+            <button id="ai-pdf-button" class="button secondary" type="button">AI from PDF</button>
+            <input id="csv-import-input" type="file" accept=".csv" hidden>
+            <button id="import-csv-button" class="button secondary" type="button">Import CSV</button>
+        </div>
+    </section>
+
+    <div id="csv-import-status" class="note-box" hidden></div>
+
+    <section id="question-list" class="question-list">
+        {% if sample_quiz.questions %}
+            {% for question in sample_quiz.questions %}
+            <article class="question-card" data-question data-question-id="{{ question.id }}">
+                <div class="question-card-head">
+                    <strong class="question-label">Question {{ loop.index }}</strong>
+                    <div class="question-card-actions">
+                        <div class="question-points">
+                            <label>Points:
+                                <input class="question-points-input" type="number" value="{{ question.points }}" min="1">
+                            </label>
+                        </div>
+                        <button class="button secondary question-remove-button" type="button">Remove</button>
+                    </div>
+                </div>
+                <label>Question
+                    <textarea class="question-text-input" rows="3" placeholder="Enter your question...">{{ question.question_text }}</textarea>
+                </label>
+                <div class="question-type-row">
+                    <label>Type
+                        <select class="question-type-select">
+                            <option value="multiple_choice" {% if question.question_type == 'multiple_choice' %}selected{% endif %}>Multiple Choice</option>
+                            <option value="true_false" {% if question.question_type == 'true_false' %}selected{% endif %}>True / False</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="options-area">
+                    <p class="options-title">Options (click to mark correct)</p>
+                    <div class="option-list">
+                        {% for option in question.options %}
+                        <label class="option-row">
+                            <input type="radio" {% if option == question.correct_answer %}checked{% endif %}>
+                            <input type="text" value="{{ option }}">
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <button class="add-option-link" type="button" {% if question.question_type == 'true_false' %}style="display:none"{% endif %}>+ Add Option</button>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <article class="question-card" data-question data-question-id="">
+                <div class="question-card-head">
+                    <strong class="question-label">Question 1</strong>
+                    <div class="question-card-actions">
+                        <div class="question-points">
+                            <label>Points:
+                                <input class="question-points-input" type="number" value="1" min="1">
+                            </label>
+                        </div>
+                        <button class="button secondary question-remove-button" type="button">Remove</button>
+                    </div>
+                </div>
+                <label>Question
+                    <textarea class="question-text-input" rows="3" placeholder="Enter your question..."></textarea>
+                </label>
+                <div class="question-type-row">
+                    <label>Type
+                        <select class="question-type-select">
+                            <option value="multiple_choice">Multiple Choice</option>
+                            <option value="true_false">True / False</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="options-area">
+                    <p class="options-title">Options (click to mark correct)</p>
+                    <div class="option-list"></div>
+                    <button class="add-option-link" type="button">+ Add Option</button>
+                </div>
+            </article>
+        {% endif %}
+    </section>
+
+    <section class="question-add-row">
+        <button id="add-question-button" class="button secondary add-question-main" type="button">+ Add Question</button>
+    </section>
+
+    <section class="publish-row">
+        <button class="button secondary publish-secondary" type="submit" name="action" value="draft">{% if is_edit_mode %}Update Draft{% else %}Save as Draft{% endif %}</button>
+        <button class="button primary publish-primary" type="submit" name="action" value="publish">{% if is_edit_mode %}Update Quiz{% else %}Publish Quiz{% endif %}</button>
+    </section>
+</form>
+
+<div id="pdf-ai-modal" class="modal-backdrop" hidden>
+    <div class="invite-modal ai-pdf-modal">
+        <div class="invite-modal-head">
+            <h2>AI from PDF</h2>
+            <button id="close-pdf-modal" class="modal-close" type="button">&times;</button>
+        </div>
+        <div class="invite-modal-body ai-pdf-body">
+            <label>Upload PDF or TXT
+                <input id="pdf-file-name" type="text" value="No file selected" readonly>
+            </label>
+            <div class="question-tools">
+                <button id="choose-pdf-file" class="button secondary" type="button">Choose File</button>
+            </div>
+
+            <div class="create-form-grid ai-pdf-grid">
+                <label>Question Type
+                    <select id="pdf-question-type">
+                        <option value="mixed">Mixed</option>
+                        <option value="multiple_choice">Multiple Choice</option>
+                        <option value="true_false">True / False</option>
+                    </select>
+                </label>
+                <label>Question Count
+                    <input id="pdf-question-count" type="number" min="1" max="30" value="5">
+                </label>
+            </div>
+
+            <div id="pdf-ai-status" class="note-box" hidden></div>
+            <div id="pdf-preview-list" class="stack-list" hidden></div>
+        </div>
+        <div class="invite-modal-actions">
+            <button id="generate-from-pdf" class="button secondary" type="button">Generate Preview</button>
+            <button id="add-pdf-questions" class="button primary" type="button" disabled>Add to Quiz</button>
+        </div>
+    </div>
+</div>
+
+<template id="question-template">
+    <article class="question-card" data-question data-question-id="">
+        <div class="question-card-head">
+            <strong class="question-label">Question</strong>
+            <div class="question-card-actions">
+                <div class="question-points">
+                    <label>Points:
+                        <input class="question-points-input" type="number" value="1" min="1">
+                    </label>
+                </div>
+                <button class="button secondary question-remove-button" type="button">Remove</button>
+            </div>
+        </div>
+        <label>Question
+            <textarea class="question-text-input" rows="3" placeholder="Enter your question..."></textarea>
+        </label>
+        <div class="question-type-row">
+            <label>Type
+                <select class="question-type-select">
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="true_false">True / False</option>
+                </select>
+            </label>
+        </div>
+        <div class="options-area">
+            <p class="options-title">Options (click to mark correct)</p>
+            <div class="option-list"></div>
+            <button class="add-option-link" type="button">+ Add Option</button>
+        </div>
+    </article>
+</template>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const editorForm = document.getElementById("quiz-editor-form");
+    const questionList = document.getElementById("question-list");
+    const addQuestionButton = document.getElementById("add-question-button");
+    const questionTemplate = document.getElementById("question-template");
+    const questionCount = document.getElementById("question-count");
+    const payloadInput = document.getElementById("questions-payload");
+    const quizCodeInput = document.getElementById("quiz-code-input");
+    const regenerateCodeButton = document.getElementById("regenerate-code-button");
+    const pdfImportInput = document.getElementById("pdf-import-input");
+    const aiPdfButton = document.getElementById("ai-pdf-button");
+    const csvImportInput = document.getElementById("csv-import-input");
+    const importCsvButton = document.getElementById("import-csv-button");
+    const pdfModal = document.getElementById("pdf-ai-modal");
+    const closePdfModal = document.getElementById("close-pdf-modal");
+    const choosePdfFile = document.getElementById("choose-pdf-file");
+    const pdfFileName = document.getElementById("pdf-file-name");
+    const generateFromPdf = document.getElementById("generate-from-pdf");
+    const addPdfQuestions = document.getElementById("add-pdf-questions");
+    const pdfPreviewList = document.getElementById("pdf-preview-list");
+    const pdfAiStatus = document.getElementById("pdf-ai-status");
+    const pdfQuestionType = document.getElementById("pdf-question-type");
+    const pdfQuestionCount = document.getElementById("pdf-question-count");
+    let generatedPdfQuestions = [];
+
+    function randomCode() {
+        const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let code = "";
+        for (let index = 0; index < 6; index += 1) {
+            code += alphabet[Math.floor(Math.random() * alphabet.length)];
+        }
+        return code;
+    }
+
+    function buildOptionRow(optionText, questionNumber, isCorrect = false) {
+        const label = document.createElement("label");
+        label.className = "option-row";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = `correct_${questionNumber}`;
+        radio.checked = isCorrect;
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = optionText;
+
+        label.appendChild(radio);
+        label.appendChild(input);
+        return label;
+    }
+
+    function createQuestionCard(question = {}) {
+        const fragment = questionTemplate.content.cloneNode(true);
+        const card = fragment.querySelector("[data-question]");
+        const questionNumber = questionList.querySelectorAll("[data-question]").length + 1;
+        card.dataset.questionId = question.id || "";
+        attachCard(card);
+
+        card.querySelector(".question-text-input").value = question.question_text || "";
+        card.querySelector(".question-points-input").value = question.points || 1;
+        card.querySelector(".question-type-select").value = question.question_type || "multiple_choice";
+
+        const type = card.querySelector(".question-type-select").value;
+        const addOptionLink = card.querySelector(".add-option-link");
+        if (type === "true_false") {
+            setOptions(card, ["True", "False"], question.correct_answer || "True");
+            addOptionLink.style.display = "none";
+        } else {
+            const options = question.options && question.options.length
+                ? question.options
+                : ["Option A", "Option B", "Option C", "Option D"];
+            setOptions(card, options, question.correct_answer || options[0] || "");
+            addOptionLink.style.display = "inline-flex";
+        }
+
+        questionList.appendChild(fragment);
+        updateLabels();
+        return questionList.lastElementChild;
+    }
+
+    function populateQuestionCard(card, question = {}) {
+        if (!card) {
+            return;
+        }
+
+        card.dataset.questionId = question.id || "";
+        card.querySelector(".question-text-input").value = question.question_text || "";
+        card.querySelector(".question-points-input").value = question.points || 1;
+        card.querySelector(".question-type-select").value = question.question_type || "multiple_choice";
+
+        const type = card.querySelector(".question-type-select").value;
+        const addOptionLink = card.querySelector(".add-option-link");
+        if (type === "true_false") {
+            setOptions(card, ["True", "False"], question.correct_answer || "True");
+            addOptionLink.style.display = "none";
+        } else {
+            const options = question.options && question.options.length
+                ? question.options
+                : ["Option A", "Option B", "Option C", "Option D"];
+            setOptions(card, options, question.correct_answer || options[0] || "");
+            addOptionLink.style.display = "inline-flex";
+        }
+    }
+
+    function cardIsBlank(card) {
+        if (!card) {
+            return false;
+        }
+
+        const questionText = (card.querySelector(".question-text-input")?.value || "").trim();
+        if (questionText) {
+            return false;
+        }
+
+        const optionValues = Array.from(card.querySelectorAll(".option-row input[type='text']"))
+            .map((input) => input.value.trim())
+            .filter(Boolean);
+
+        return optionValues.every((value) => /^Option [A-F]$/.test(value) || value === "True" || value === "False");
+    }
+
+    function detectDelimiter(headerLine) {
+        const candidates = [",", ";", "\t"];
+        let winner = ",";
+        let bestCount = -1;
+        candidates.forEach((delimiter) => {
+            const count = (headerLine.match(new RegExp(delimiter === "\t" ? "\\t" : `\\${delimiter}`, "g")) || []).length;
+            if (count > bestCount) {
+                bestCount = count;
+                winner = delimiter;
+            }
+        });
+        return winner;
+    }
+
+    function parseDelimitedLine(line, delimiter) {
+        const normalizedLine = line.replace(/^\uFEFF/, "");
+        const values = [];
+        let current = "";
+        let inQuotes = false;
+
+        for (let index = 0; index < normalizedLine.length; index += 1) {
+            const char = normalizedLine[index];
+            const next = normalizedLine[index + 1];
+
+            if (char === '"' && inQuotes && next === '"') {
+                current += '"';
+                index += 1;
+            } else if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === delimiter && !inQuotes) {
+                values.push(current.trim());
+                current = "";
+            } else {
+                current += char;
+            }
+        }
+
+        values.push(current.trim());
+        return values;
+    }
+
+    function getColumnValue(row, keys) {
+        for (const key of keys) {
+            if (row[key]) {
+                return row[key];
+            }
+        }
+        return "";
+    }
+
+    function normalizeQuestionType(rawType) {
+        const value = (rawType || "").trim().toLowerCase();
+        if (["true_false", "true/false", "true false", "tf", "t/f"].includes(value)) {
+            return "true_false";
+        }
+        return "multiple_choice";
+    }
+
+    function setCsvStatus(message, kind = "info") {
+        const statusBox = document.getElementById("csv-import-status");
+        if (!statusBox) {
+            return;
+        }
+        statusBox.hidden = false;
+        statusBox.textContent = message;
+        statusBox.classList.remove("csv-status-error", "csv-status-success");
+        if (kind === "error") {
+            statusBox.classList.add("csv-status-error");
+        }
+        if (kind === "success") {
+            statusBox.classList.add("csv-status-success");
+        }
+    }
+
+    function setPdfStatus(message, kind = "info") {
+        if (!pdfAiStatus) {
+            return;
+        }
+        pdfAiStatus.hidden = false;
+        pdfAiStatus.textContent = message;
+        pdfAiStatus.classList.remove("csv-status-error", "csv-status-success");
+        if (kind === "error") {
+            pdfAiStatus.classList.add("csv-status-error");
+        }
+        if (kind === "success") {
+            pdfAiStatus.classList.add("csv-status-success");
+        }
+    }
+
+    function resetPdfPreview() {
+        generatedPdfQuestions = [];
+        if (pdfPreviewList) {
+            pdfPreviewList.hidden = true;
+            pdfPreviewList.innerHTML = "";
+        }
+        if (addPdfQuestions) {
+            addPdfQuestions.disabled = true;
+        }
+    }
+
+    function openPdfModal() {
+        if (!pdfModal) {
+            return;
+        }
+        pdfModal.hidden = false;
+        document.body.classList.add("modal-open");
+    }
+
+    function hidePdfModal() {
+        if (!pdfModal) {
+            return;
+        }
+        pdfModal.hidden = true;
+        document.body.classList.remove("modal-open");
+    }
+
+    function renderPdfPreview(questions) {
+        if (!pdfPreviewList) {
+            return;
+        }
+        pdfPreviewList.innerHTML = "";
+        questions.forEach((question, index) => {
+            const card = document.createElement("div");
+            card.className = "list-card";
+            const options = question.options.map((option) => `<li>${option}</li>`).join("");
+            card.innerHTML = `
+                <strong>Question ${index + 1}</strong>
+                <p>${question.question_text}</p>
+                <p class="helper">Type: ${question.question_type.replace("_", " ")} | Correct: ${question.correct_answer}</p>
+                <ul class="signal-list">${options}</ul>
+            `;
+            pdfPreviewList.appendChild(card);
+        });
+        pdfPreviewList.hidden = false;
+        pdfPreviewList.scrollTop = 0;
+    }
+
+    function importQuestionsFromCsv(text) {
+        const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+        if (lines.length < 2) {
+            setCsvStatus("CSV needs a header row and at least one question row.", "error");
+            return;
+        }
+
+        const delimiter = detectDelimiter(lines[0]);
+        const headers = parseDelimitedLine(lines[0], delimiter)
+            .map((header) => header.trim().toLowerCase().replace(/\s+/g, "_"));
+        const questionHeaderAliases = ["question_text", "question", "item", "prompt"];
+        if (!headers.some((header) => questionHeaderAliases.includes(header))) {
+            setCsvStatus("CSV must include a question column like question_text or question.", "error");
+            return;
+        }
+
+        questionList.innerHTML = "";
+        let importedCount = 0;
+
+        lines.slice(1).forEach((line) => {
+            const cells = parseDelimitedLine(line, delimiter);
+            const row = {};
+            headers.forEach((header, index) => {
+                row[header] = cells[index] || "";
+            });
+
+            const questionText = getColumnValue(row, ["question_text", "question", "item", "prompt"]);
+            if (!questionText) {
+                return;
+            }
+
+            const questionType = normalizeQuestionType(getColumnValue(row, ["question_type", "type"]));
+            const options = questionType === "true_false"
+                ? ["True", "False"]
+                : [
+                    getColumnValue(row, ["option_a", "option1", "choice_a", "choice1"]),
+                    getColumnValue(row, ["option_b", "option2", "choice_b", "choice2"]),
+                    getColumnValue(row, ["option_c", "option3", "choice_c", "choice3"]),
+                    getColumnValue(row, ["option_d", "option4", "choice_d", "choice4"]),
+                    getColumnValue(row, ["option_e", "option5", "choice_e", "choice5"]),
+                    getColumnValue(row, ["option_f", "option6", "choice_f", "choice6"]),
+                ].filter(Boolean);
+            const correctAnswer = getColumnValue(row, ["correct_answer", "answer", "correct", "key"]) || options[0] || (questionType === "true_false" ? "True" : "");
+
+            createQuestionCard({
+                question_text: questionText,
+                question_type: questionType,
+                points: getColumnValue(row, ["points", "score", "weight"]) || 1,
+                options,
+                correct_answer: correctAnswer,
+            });
+            importedCount += 1;
+        });
+
+        if (!questionList.querySelector("[data-question]")) {
+            createQuestionCard();
+            setCsvStatus("No valid questions were found in the CSV file.", "error");
+            return;
+        }
+
+        setCsvStatus(`${importedCount} question${importedCount !== 1 ? "s" : ""} imported successfully.`, "success");
+    }
+
+    function setOptions(card, options, correctAnswer) {
+        const optionList = card.querySelector(".option-list");
+        optionList.innerHTML = "";
+        options.forEach((optionText) => {
+            optionList.appendChild(buildOptionRow(optionText, 1, optionText === correctAnswer));
+        });
+    }
+
+    function seedOptions(card, questionNumber) {
+        const optionList = card.querySelector(".option-list");
+        if (optionList.children.length) {
+            return;
+        }
+        ["Option A", "Option B", "Option C", "Option D"].forEach((text) => {
+            optionList.appendChild(buildOptionRow(text, questionNumber));
+        });
+    }
+
+    function updateLabels() {
+        const cards = questionList.querySelectorAll("[data-question]");
+        questionCount.textContent = `Questions (${cards.length})`;
+
+        cards.forEach((card, index) => {
+            const number = index + 1;
+            const label = card.querySelector(".question-label");
+            if (label) {
+                label.textContent = `Question ${number}`;
+            }
+
+            card.querySelectorAll(".option-row input[type='radio']").forEach((radio) => {
+                radio.name = `correct_${number}`;
+            });
+        });
+    }
+
+    function attachOptionAdder(card) {
+        const addOptionButton = card.querySelector(".add-option-link");
+        const optionList = card.querySelector(".option-list");
+        addOptionButton.addEventListener("click", () => {
+            const optionLetter = String.fromCharCode(65 + optionList.children.length);
+            const questionNumber = Array.from(questionList.querySelectorAll("[data-question]")).indexOf(card) + 1;
+            optionList.appendChild(buildOptionRow(`Option ${optionLetter}`, questionNumber));
+            updateLabels();
+        });
+    }
+
+    function attachRemoval(card) {
+        const removeButton = card.querySelector(".question-remove-button");
+        removeButton.addEventListener("click", () => {
+            const cards = questionList.querySelectorAll("[data-question]");
+            if (cards.length === 1) {
+                card.querySelector(".question-text-input").value = "";
+                card.querySelector(".question-points-input").value = "1";
+                card.querySelector(".question-type-select").value = "multiple_choice";
+                card.querySelector(".add-option-link").style.display = "inline-flex";
+                card.querySelector(".option-list").innerHTML = "";
+                seedOptions(card, 1);
+                updateLabels();
+                return;
+            }
+            card.remove();
+            updateLabels();
+        });
+    }
+
+    function attachCard(card) {
+        seedOptions(card, Array.from(questionList.querySelectorAll("[data-question]")).indexOf(card) + 1 || 1);
+        attachOptionAdder(card);
+        attachRemoval(card);
+    }
+
+    questionList.querySelectorAll("[data-question]").forEach((card) => {
+        attachCard(card);
+    });
+
+    addQuestionButton.addEventListener("click", () => {
+        createQuestionCard();
+        questionList.lastElementChild.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    regenerateCodeButton.addEventListener("click", () => {
+        quizCodeInput.value = randomCode();
+    });
+
+    if (importCsvButton && csvImportInput) {
+        importCsvButton.addEventListener("click", () => {
+            csvImportInput.click();
+        });
+
+        csvImportInput.addEventListener("change", async (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) {
+                return;
+            }
+            if (!file.name.toLowerCase().endsWith(".csv")) {
+                setCsvStatus("Please upload a .csv file.", "error");
+                csvImportInput.value = "";
+                return;
+            }
+
+            const text = await file.text();
+            importQuestionsFromCsv(text);
+            csvImportInput.value = "";
+        });
+    }
+
+    if (aiPdfButton && pdfImportInput) {
+        aiPdfButton.addEventListener("click", openPdfModal);
+    }
+
+    if (closePdfModal) {
+        closePdfModal.addEventListener("click", hidePdfModal);
+    }
+
+    if (choosePdfFile && pdfImportInput) {
+        choosePdfFile.addEventListener("click", () => {
+            pdfImportInput.click();
+        });
+    }
+
+    if (pdfImportInput) {
+        pdfImportInput.addEventListener("change", async (event) => {
+            const file = event.target.files && event.target.files[0];
+            resetPdfPreview();
+            if (pdfAiStatus) {
+                pdfAiStatus.hidden = true;
+            }
+            if (!file) {
+                return;
+            }
+            pdfFileName.value = file.name;
+            setPdfStatus(`${file.name} selected. Click Generate Preview to extract questions.`, "success");
+        });
+    }
+
+    if (generateFromPdf) {
+        generateFromPdf.addEventListener("click", async () => {
+            resetPdfPreview();
+            const file = pdfImportInput && pdfImportInput.files ? pdfImportInput.files[0] : null;
+            if (!file) {
+                setPdfStatus("Upload a PDF or TXT file first.", "error");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("question_type", pdfQuestionType ? pdfQuestionType.value : "mixed");
+            formData.append("question_count", pdfQuestionCount ? pdfQuestionCount.value : "5");
+
+            setPdfStatus("Reading file and generating preview...", "success");
+
+            try {
+                const response = await fetch("{{ url_for('create_quiz_ai_preview') }}", {
+                    method: "POST",
+                    body: formData,
+                });
+                const payload = await response.json();
+
+                if (!response.ok || !payload.ok) {
+                    setPdfStatus(payload.message || "Preview generation failed.", "error");
+                    return;
+                }
+
+                generatedPdfQuestions = payload.questions || [];
+                renderPdfPreview(generatedPdfQuestions);
+                setPdfStatus(`${payload.message} ${generatedPdfQuestions.length} question${generatedPdfQuestions.length !== 1 ? "s" : ""} ready to add.`, "success");
+                if (addPdfQuestions) {
+                    addPdfQuestions.disabled = generatedPdfQuestions.length === 0;
+                }
+            } catch (error) {
+                setPdfStatus("Could not generate the preview right now. Please try again.", "error");
+            }
+        });
+    }
+
+    if (addPdfQuestions) {
+        addPdfQuestions.addEventListener("click", () => {
+            if (!generatedPdfQuestions.length) {
+                setPdfStatus("Generate a preview first before adding questions.", "error");
+                return;
+            }
+            const firstBlankCard = Array.from(questionList.querySelectorAll("[data-question]")).find((card) => cardIsBlank(card));
+
+            generatedPdfQuestions.forEach((question, index) => {
+                if (index === 0 && firstBlankCard) {
+                    populateQuestionCard(firstBlankCard, question);
+                } else {
+                    createQuestionCard(question);
+                }
+            });
+            updateLabels();
+            hidePdfModal();
+            setCsvStatus(`${generatedPdfQuestions.length} AI-generated question${generatedPdfQuestions.length !== 1 ? "s" : ""} added to the quiz.`, "success");
+            resetPdfPreview();
+            if (pdfAiStatus) {
+                pdfAiStatus.hidden = true;
+            }
+            pdfImportInput.value = "";
+            pdfFileName.value = "No file selected";
+        });
+    }
+
+    questionList.addEventListener("change", (event) => {
+        const select = event.target.closest(".question-type-select");
+        if (!select) {
+            return;
+        }
+
+        const card = select.closest("[data-question]");
+        const addOptionLink = card.querySelector(".add-option-link");
+
+        if (select.value === "true_false") {
+            setOptions(card, ["True", "False"], "True");
+            addOptionLink.style.display = "none";
+        } else {
+            setOptions(card, ["Option A", "Option B", "Option C", "Option D"], "Option A");
+            addOptionLink.style.display = "inline-flex";
+        }
+        updateLabels();
+    });
+
+    editorForm.addEventListener("submit", () => {
+        const payload = Array.from(questionList.querySelectorAll("[data-question]")).map((card) => {
+            const optionRows = Array.from(card.querySelectorAll(".option-row"));
+            const options = optionRows
+                .map((row) => row.querySelector("input[type='text']").value.trim())
+                .filter(Boolean);
+            const correctRow = optionRows.find((row) => row.querySelector("input[type='radio']").checked);
+
+            return {
+                id: card.dataset.questionId || "",
+                question_text: card.querySelector(".question-text-input").value.trim(),
+                question_type: card.querySelector(".question-type-select").value,
+                points: card.querySelector(".question-points-input").value || "1",
+                options,
+                correct_answer: correctRow ? correctRow.querySelector("input[type='text']").value.trim() : (options[0] || ""),
+            };
+        }).filter((question) => question.question_text);
+
+        payloadInput.value = JSON.stringify(payload);
+    });
+
+    updateLabels();
+});
+</script>
+{% endblock %}

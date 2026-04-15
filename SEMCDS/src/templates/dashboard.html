@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Dashboard{% endblock %}
+{% block content %}
+<!-- Header -->
+<div class="mb-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm font-semibold text-rose-700 uppercase tracking-wide mb-1">Instructor Overview</p>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Instructor Dashboard</h1>
+            <p class="text-gray-600">Smart Exam Management &amp; Cheating Detection System</p>
+        </div>
+        <a href="{{ url_for('create_quiz') }}" class="inline-flex justify-center px-6 py-3 bg-rose-700 hover:bg-rose-800 text-white font-semibold rounded-lg transition shadow-md w-full sm:w-auto">
+            + New Quiz
+        </a>
+    </div>
+</div>
+<!-- Stats Grid -->
+<div class="grid md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-sm text-gray-600 font-medium">Total Quizzes</p>
+                <strong class="text-3xl text-gray-900 block mt-1">{{ stats.total_quizzes }}</strong>
+            </div>
+            <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="4" y="3" width="16" height="18" rx="2"></rect>
+                    <line x1="8" y1="8" x2="16" y2="8"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                    <line x1="8" y1="16" x2="13" y2="16"></line>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-sm text-gray-600 font-medium">Active Quizzes</p>
+                <strong class="text-3xl text-gray-900 block mt-1">{{ stats.active_quizzes }}</strong>
+            </div>
+            <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-sm text-gray-600 font-medium">Total Submissions</p>
+                <strong class="text-3xl text-gray-900 block mt-1">{{ stats.total_submissions }}</strong>
+            </div>
+            <div class="w-10 h-10 bg-rose-100 text-rose-800 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="8" y1="13" x2="16" y2="13"></line>
+                    <line x1="8" y1="17" x2="14" y2="17"></line>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <p class="text-sm text-gray-600 font-medium">Unreviewed Flags</p>
+                <strong class="text-3xl text-gray-900 block mt-1">{{ stats.unreviewed_flags }}</strong>
+            </div>
+            <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V7l8-4z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <circle cx="12" cy="17" r="1"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Average Score Panel -->
+<div class="bg-gradient-to-r from-rose-50 to-red-50 rounded-xl p-5 sm:p-6 lg:p-8 border border-rose-100 mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex items-center gap-4 sm:gap-6">
+        <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-xl flex items-center justify-center">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="4" y1="20" x2="20" y2="20"></line>
+                <rect x="6" y="11" width="3" height="7"></rect>
+                <rect x="11" y="8" width="3" height="10"></rect>
+                <rect x="16" y="5" width="3" height="13"></rect>
+            </svg>
+        </div>
+        <div>
+            <p class="text-sm text-gray-600 font-medium mb-1">Average Score Across All Quizzes</p>
+            <strong class="text-3xl text-gray-900">{{ stats.average_score }}%</strong>
+        </div>
+    </div>
+    <a href="{{ url_for('activity_monitor') }}" class="text-rose-800 hover:text-rose-900 font-semibold transition self-start lg:self-auto">
+        View Logs →
+    </a>
+</div>
+
+<section class="grid lg:grid-cols-3 gap-6 mb-8">
+    <article class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Exam Schedule</h2>
+                    <p class="text-xs text-gray-500">Track daily quiz schedules and statuses</p>
+                </div>
+            </div>
+            <div class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-2 py-1.5">
+                <strong class="min-w-[130px] text-center text-sm text-gray-700">{{ calendar_month }}</strong>
+                <button id="open-calendar-chooser" type="button" class="ml-1 inline-flex items-center rounded-lg bg-rose-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-800 transition">Date Chooser</button>
+            </div>
+        </div>
+
+        <div class="rounded-xl border border-gray-200 p-3 sm:p-4 bg-white">
+            <p class="text-sm text-gray-600">Calendar view is available on demand. Click <span class="font-semibold text-rose-700">Date Chooser</span> to pick an exact schedule date.</p>
+            <div class="mt-3 flex flex-wrap items-center gap-3 text-[11px] sm:text-xs text-gray-600">
+                <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-green-500"></span>Active</span>
+                <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-amber-500"></span>Upcoming</span>
+                <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-gray-400"></span>Closed</span>
+            </div>
+        </div>
+
+        <div class="mt-5 rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <strong class="text-gray-900">{{ selected_day or calendar_month }}</strong>
+            {% if selected_day_quizzes %}
+            <div class="mt-3 space-y-3">
+                {% for quiz in selected_day_quizzes %}
+                <div class="flex items-start justify-between gap-3 rounded-lg bg-white border border-gray-200 p-3">
+                    <div>
+                        <strong class="text-sm text-gray-900">{{ quiz.title }}</strong>
+                        <p class="text-xs sm:text-sm text-gray-600 mt-1">{{ format_schedule(quiz.scheduled_start) }} to {{ format_schedule(quiz.scheduled_end) }}</p>
+                    </div>
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full {% if schedule_status(quiz) == 'active' %}bg-green-100 text-green-700{% elif schedule_status(quiz) == 'upcoming' %}bg-amber-100 text-amber-700{% else %}bg-gray-200 text-gray-700{% endif %}">{{ schedule_status(quiz) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="mt-2 text-sm text-gray-500">No quizzes scheduled</p>
+            {% endif %}
+        </div>
+    </article>
+
+    <article class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6">
+        <div class="flex items-start gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2l2.2 4.9L19 9.2l-4 3.7.9 5.1-3.9-2.3-3.9 2.3.9-5.1-4-3.7 4.8-2.3L12 2z"></path>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">AI Incident Summary</h2>
+                <p class="text-sm text-gray-500">AI-generated analysis per quiz</p>
+            </div>
+        </div>
+
+        <form id="ai-summary-form" class="space-y-3" method="get">
+            <select name="quizId" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-100">
+                <option value="" {% if not selected_quiz %}selected{% endif %}>Select a quiz to analyze...</option>
+                {% for quiz in quizzes %}
+                <option value="{{ quiz.id }}" {% if selected_quiz == quiz.id %}selected{% endif %}>{{ quiz.title }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="analyzed" value="1">
+            <button class="w-full rounded-lg bg-rose-700 px-4 py-2.5 text-white font-semibold hover:bg-rose-800 transition" type="submit">Analyze with AI</button>
+        </form>
+
+        <div id="ai-summary-loading" class="mt-4 rounded-lg border border-rose-100 bg-rose-50 p-3 text-sm text-rose-700" hidden>
+            Analyzing activity data...
+        </div>
+
+        {% if summary %}
+        <div class="summary-result mt-5 space-y-4">
+            <div class="rounded-lg p-3 border {% if summary.risk_level|lower == 'high' %}bg-red-50 border-red-200{% elif summary.risk_level|lower == 'medium' %}bg-amber-50 border-amber-200{% else %}bg-green-50 border-green-200{% endif %}">
+                <span class="inline-block text-xs font-semibold px-2 py-1 rounded-full mb-2 {% if summary.risk_level|lower == 'high' %}bg-red-100 text-red-700{% elif summary.risk_level|lower == 'medium' %}bg-amber-100 text-amber-700{% else %}bg-green-100 text-green-700{% endif %}">{{ summary.risk_level }} Risk</span>
+                <p class="text-sm text-gray-700">{{ summary.overview }}</p>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-800 mb-2">Suspicious Patterns</h3>
+                <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    {% for pattern in summary.patterns %}
+                    <li>{{ pattern }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-800 mb-2">Most Flagged Students</h3>
+                <div class="flex flex-wrap gap-2 mb-3">
+                    {% for student in summary.students %}
+                    <span class="px-2.5 py-1 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200">{{ student }}</span>
+                    {% endfor %}
+                </div>
+                <div class="text-xs text-gray-600 flex flex-wrap gap-3">
+                    <span>{{ summary.flags_count }} flagged events</span>
+                    <span>{{ summary.attempts_count }} attempts reviewed</span>
+                </div>
+            </div>
+
+            <div class="rounded-lg bg-gray-50 border border-gray-200 p-3">
+                <strong class="block text-sm text-gray-800 mb-1">Instructor Recommendation</strong>
+                <p class="text-sm text-gray-700">{{ summary.recommendation }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </article>
+</section>
+
+<section class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+    <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Recent Quizzes</h2>
+    <a class="text-sm font-semibold text-rose-700 hover:text-rose-800" href="{{ url_for('quiz_manager') }}">View all -&gt;</a>
+</section>
+
+<section class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+    {% for quiz in recent_quizzes %}
+    <article class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:shadow-md transition">
+        <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+                <h3 class="text-lg font-bold text-gray-900 leading-tight">{{ quiz.title }}</h3>
+                <p class="text-sm text-gray-500">{{ quiz.subject }}</p>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {% if quiz.status == 'active' %}bg-green-100 text-green-700{% elif quiz.status == 'upcoming' %}bg-amber-100 text-amber-700{% else %}bg-gray-200 text-gray-700{% endif %}">{{ quiz.status }}</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ quiz.description }}</p>
+        <div class="flex flex-wrap gap-2 text-xs text-gray-600 mb-4">
+            <span class="px-2 py-1 rounded bg-gray-100 border border-gray-200">{{ quiz.time_limit_minutes }} min</span>
+            <span class="px-2 py-1 rounded bg-gray-100 border border-gray-200">{{ quiz.questions|length }} questions</span>
+            <span class="px-2 py-1 rounded bg-gray-100 border border-gray-200">{{ attempts | selectattr('quiz_id', 'equalto', quiz.id) | list | length }} attempts</span>
+            {% if quiz.monitoring_enabled %}<span class="px-2 py-1 rounded bg-rose-100 text-rose-700 border border-rose-200">Monitored</span>{% endif %}
+        </div>
+        <p class="text-xs text-gray-500">Code: <strong class="text-gray-700 tracking-wide">{{ quiz.quiz_code }}</strong></p>
+    </article>
+    {% endfor %}
+</section>
+
+<div id="calendar-chooser-modal" class="modal-backdrop" hidden>
+    <div class="invite-modal" style="width:min(420px,100%);">
+        <div class="invite-modal-head" style="padding-bottom:0.4rem;">
+            <h2 style="font-size:1.35rem;">Calendar Chooser</h2>
+            <button id="close-calendar-chooser" class="modal-close" type="button" aria-label="Close">&times;</button>
+        </div>
+        <div class="invite-modal-body" style="padding-top:0.35rem;">
+            <label for="dashboard-date-picker" class="form-label" style="display:block;font-weight:600;color:#374151;margin-bottom:0.5rem;">Choose Exam Date</label>
+            <input id="dashboard-date-picker" type="date" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-100">
+            <p class="text-xs text-gray-500" style="margin-top:0.6rem;">Selecting a date will update both the month view and selected day schedule.</p>
+        </div>
+        <div class="invite-modal-actions" style="padding-top:0.9rem;">
+            <button id="cancel-calendar-chooser" class="button secondary" type="button">Cancel</button>
+            <button id="apply-calendar-chooser" class="button primary" type="button">Go to Date</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("ai-summary-form");
+    const loading = document.getElementById("ai-summary-loading");
+    if (form && loading) {
+        loading.hidden = true;
+
+        form.addEventListener("submit", (event) => {
+            const select = form.querySelector("select[name='quizId']");
+            if (!select || !select.value) {
+                event.preventDefault();
+                loading.hidden = true;
+                return;
+            }
+
+            event.preventDefault();
+            loading.hidden = false;
+            const result = document.querySelector(".summary-result");
+            if (result) result.style.display = "none";
+
+            setTimeout(() => {
+                form.submit();
+            }, 700);
+        });
+    }
+
+    const openChooserButton = document.getElementById("open-calendar-chooser");
+    const closeChooserButton = document.getElementById("close-calendar-chooser");
+    const cancelChooserButton = document.getElementById("cancel-calendar-chooser");
+    const applyChooserButton = document.getElementById("apply-calendar-chooser");
+    const chooserModal = document.getElementById("calendar-chooser-modal");
+    const dateInput = document.getElementById("dashboard-date-picker");
+    const selectedDay = "{{ selected_day or '' }}";
+    const monthKey = "{{ calendar_month_key }}";
+
+    function closeChooser() {
+        if (!chooserModal) return;
+        chooserModal.hidden = true;
+        document.body.classList.remove("modal-open");
+    }
+
+    function openChooser() {
+        if (!chooserModal || !dateInput) return;
+        if (!dateInput.value) {
+            dateInput.value = selectedDay || `${monthKey}-01`;
+        }
+        chooserModal.hidden = false;
+        document.body.classList.add("modal-open");
+        dateInput.focus();
+    }
+
+    function applyChooser() {
+        if (!dateInput || !dateInput.value) return;
+        const selected = new Date(`${dateInput.value}T00:00:00`);
+        if (Number.isNaN(selected.getTime())) return;
+        const month = `${selected.getFullYear()}-${String(selected.getMonth() + 1).padStart(2, "0")}`;
+        const params = new URLSearchParams(window.location.search);
+        params.set("month", month);
+        params.set("day", dateInput.value);
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    }
+
+    if (openChooserButton) {
+        openChooserButton.addEventListener("click", openChooser);
+    }
+    if (closeChooserButton) {
+        closeChooserButton.addEventListener("click", closeChooser);
+    }
+    if (cancelChooserButton) {
+        cancelChooserButton.addEventListener("click", closeChooser);
+    }
+    if (applyChooserButton) {
+        applyChooserButton.addEventListener("click", applyChooser);
+    }
+    if (chooserModal) {
+        chooserModal.addEventListener("click", (event) => {
+            if (event.target === chooserModal) {
+                closeChooser();
+            }
+        });
+    }
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && chooserModal && !chooserModal.hidden) {
+            closeChooser();
+        }
+    });
+});
+</script>
+{% endblock %}

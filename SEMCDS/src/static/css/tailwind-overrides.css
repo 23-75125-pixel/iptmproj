@@ -1,0 +1,127 @@
+/* Tailwind CSS Global Overrides and Custom Utilities */
+
+@layer components {
+    /* Tables */
+    .data-table {
+        @apply w-full border-collapse;
+    }
+
+    .data-table th {
+        @apply px-4 py-3 text-left text-sm font-semibold text-gray-700 bg-gray-50 border-b border-gray-200;
+    }
+
+    .data-table td {
+        @apply px-4 py-3 text-sm text-gray-700 border-b border-gray-100;
+    }
+
+    /* Cards and Panels */
+    .card {
+        @apply bg-white rounded-lg p-6 border border-gray-200 shadow-sm;
+    }
+
+    .card:hover {
+        @apply shadow-md;
+    }
+
+    /* Modals */
+    .modal {
+        @apply fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50;
+    }
+
+    .modal-content {
+        @apply bg-white rounded-xl shadow-2xl max-w-md w-full mx-4;
+    }
+
+    /* Forms */
+    .form-group {
+        @apply space-y-2 mb-4;
+    }
+
+    .form-label {
+        @apply block text-sm font-semibold text-gray-900;
+    }
+
+    /* Alerts */
+    .alert {
+        @apply px-4 py-3 rounded-lg border;
+    }
+
+    .alert-success {
+        @apply bg-green-50 border-green-200 text-green-700;
+    }
+
+    .alert-error {
+        @apply bg-red-50 border-red-200 text-red-700;
+    }
+
+    .alert-warning {
+        @apply bg-yellow-50 border-yellow-200 text-yellow-700;
+    }
+
+    /* Badges */
+    .badge {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+    }
+
+    .badge-primary {
+        @apply bg-rose-100 text-rose-800;
+    }
+
+    .badge-success {
+        @apply bg-amber-100 text-amber-800;
+    }
+
+    .badge-warning {
+        @apply bg-yellow-100 text-yellow-700;
+    }
+
+    .badge-danger {
+        @apply bg-red-100 text-red-700;
+    }
+
+    /* Loading States */
+    .animate-shimmer {
+        @apply animate-pulse;
+    }
+
+    /* Responsive Utilities */
+    @screen md {
+        .container {
+            @apply max-w-6xl mx-auto px-4;
+        }
+    }
+}
+
+@layer utilities {
+    /* Smooth Transitions */
+    .transition-smooth {
+        @apply transition-all duration-300 ease-in-out;
+    }
+
+    /* Text Truncation */
+    .truncate-2 {
+        @apply line-clamp-2;
+    }
+
+    .truncate-3 {
+        @apply line-clamp-3;
+    }
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d4a6b7;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8a1538;
+}

@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Student Dashboard{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <h1>Welcome back, {{ user.full_name.split(' ')[0] }}!</h1>
+        <p class="subhead">Here's your learning progress</p>
+    </div>
+</section>
+
+<section class="activity-stats-grid student-stats-grid">
+    <article class="stat-card">
+        <div class="stat-icon rose">B</div>
+        <div>
+            <strong>{{ summary.quizzes_taken }}</strong>
+            <span>Quizzes Taken</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon mint">A</div>
+        <div>
+            <strong>{{ summary.average_score }}%</strong>
+            <span>Average Score</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon amber">T</div>
+        <div>
+            <strong>{{ summary.best_score }}%</strong>
+            <span>Best Score</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon blue">P</div>
+        <div>
+            <strong>{{ summary.passed_count }}</strong>
+            <span>Passed (&ge;75%)</span>
+        </div>
+    </article>
+</section>
+
+<section class="two-column student-progress-grid">
+    <article class="panel">
+        <div class="panel-head">
+            <div>
+                <h2>Recent Performance</h2>
+            </div>
+        </div>
+        <div class="student-chart">
+            {% for item in summary.performance %}
+            <div class="student-bar-group">
+                <div class="student-bar-track">
+                    <div class="student-bar-fill" style="height: {{ item.percentage }}%;"></div>
+                </div>
+                <span>{{ item.short_label }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-head">
+            <div>
+                <h2>Performance</h2>
+            </div>
+        </div>
+        <div class="performance-item">
+            <div class="performance-line"><span>Pass Rate</span><strong>{{ summary.pass_rate }}%</strong></div>
+            <div class="progress-track"><div class="progress-fill" style="width: {{ summary.pass_rate }}%;"></div></div>
+        </div>
+        <div class="performance-item">
+            <div class="performance-line"><span>Average Score</span><strong>{{ summary.average_score }}%</strong></div>
+            <div class="progress-track"><div class="progress-fill dark" style="width: {{ summary.average_score }}%;"></div></div>
+        </div>
+        <div class="student-note">{{ "Great work!" if summary.average_score >= 75 else "Good start!" }}</div>
+    </article>
+</section>
+
+<section class="student-cta">
+    <div>
+        <h2>Ready to take a quiz?</h2>
+        <p>Enter your quiz code to start</p>
+    </div>
+    <a class="button secondary student-cta-button" href="{{ url_for('join_quiz') }}">Join Quiz -></a>
+</section>
+
+<section class="student-list-section">
+    <h2>Available Quizzes</h2>
+    <div class="stack-list">
+        {% for quiz in open_quiz_list %}
+        <div class="list-card student-available-card">
+            <div>
+                <strong>{{ quiz.title }}</strong>
+                <p>{{ quiz.subject }} &middot; {{ quiz.time_limit_minutes }} min &middot; {{ quiz.questions|length }} questions</p>
+            </div>
+            <a class="button primary" href="{{ url_for('take_quiz', quizId=quiz.id) }}">Take</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="student-list-section">
+    <h2>Quiz History</h2>
+    <div class="stack-list">
+        {% for item in summary.history %}
+        <div class="list-card student-history-card">
+            <div>
+                <strong>{{ item.title }}</strong>
+                <p>{{ item.subject }} &middot; {{ item.date }}</p>
+            </div>
+            <div class="student-history-score">
+                <strong class="{% if item.percentage >= 75 %}score-good{% elif item.percentage >= 50 %}score-mid{% else %}score-low{% endif %}">{{ item.percentage }}%</strong>
+                <span>{{ item.score_text }}</span>
+                <span class="status-pill published">{{ item.status }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

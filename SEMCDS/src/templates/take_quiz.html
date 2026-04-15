@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Take Quiz{% endblock %}
+{% block content %}
+{% if not access_allowed %}
+<section class="schedule-message blocked">
+    <strong>Quiz Locked</strong>
+    <p>{{ access_message }}</p>
+</section>
+<section class="panel">
+    <div class="panel-head">
+        <div>
+            <p class="eyebrow">Availability Window</p>
+            <h2>Access Blocked</h2>
+        </div>
+    </div>
+    <p>{{ access_message }}</p>
+    <a class="button secondary" href="{{ url_for('join_quiz', code=quiz.quiz_code) }}">Back to Join Quiz</a>
+</section>
+{% elif submitted and attempt %}
+<section class="take-result-wrap">
+    <article class="panel take-result-card">
+        <div class="take-result-icon">✓</div>
+        <h1>Quiz Completed!</h1>
+        <p class="subhead">{{ quiz.title }}</p>
+
+        <div class="take-result-score">
+            <strong>{{ attempt.percentage }}%</strong>
+            <span>{{ attempt.score }} out of {{ attempt.total_points }} points</span>
+        </div>
+
+        <div class="take-result-breakdown">
+            {% for answer in attempt.answers %}
+            {% set question = quiz.questions | selectattr('id', 'equalto', answer.question_id) | first %}
+            <div class="take-breakdown-item {% if answer.is_correct %}correct{% else %}wrong{% endif %}">
+                <strong>{{ loop.index }}. {{ question.question_text if question else 'Question' }}</strong>
+                <p>Your answer: <span>{{ answer.selected_answer or 'No answer' }}</span></p>
+                <p>Correct: <span>{{ question.correct_answer if question else 'N/A' }}</span></p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a class="button primary" href="{{ url_for('student_dashboard') }}">Back to Dashboard</a>
+    </article>
+</section>
+{% else %}
+<section class="take-quiz-shell">
+    <div class="take-quiz-head">
+        <div>
+            <h1>{{ quiz.title }}</h1>
+            <p id="answered-label" class="subhead">0/{{ quiz.questions|length }} answered</p>
+            {% if quiz.monitoring_enabled %}
+            <p id="monitoring-status" class="subhead" style="margin-top:0.3rem;">Camera monitoring: waiting for consent</p>
+            {% endif %}
+        </div>
+        <div class="take-timer-chip">
+            <span>◷</span>
+            <strong id="countdown-timer">{{ "%02d:00"|format(quiz.time_limit_minutes) }}</strong>
+        </div>
+    </div>
+
+    <div class="take-question-nav">
+        {% for question in quiz.questions %}
+        <button class="nav-chip {% if loop.first %}current{% endif %}" type="button" data-nav-chip>{{ loop.index }}</button>
+        {% endfor %}
+    </div>
+
+    <form id="quiz-submit-form" method="post" class="take-quiz-form">
+        <input type="hidden" name="quizId" value="{{ quiz.id }}">
+        {% if quiz.monitoring_enabled %}
+        <input id="consent-field" type="hidden" name="consent_given" value="">
+        {% endif %}
+
+        {% for question in quiz.questions %}
+        <article class="panel take-question-card" data-question-card>
+            <div class="take-question-top">
+                <span class="take-question-badge">Question {{ loop.index }} of {{ quiz.questions|length }}</span>
+                <span class="take-question-points">{{ question.points }} point{% if question.points != 1 %}s{% endif %}</span>
+            </div>
+            <h2>{{ question.question_text }}</h2>
+            <div class="take-options">
+                {% for option in question.options %}
+                <label class="take-option">
+                    <input type="radio" name="question_{{ question.id }}" value="{{ option }}">
+                    <span>{{ option }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </article>
+        {% endfor %}
+
+        <div class="take-submit-row">
+            <button class="button secondary" type="button" disabled>Previous</button>
+            <button id="open-submit-modal" class="button primary take-submit-button" type="button">Submit Quiz</button>
+        </div>
+    </form>
+</section>
+
+{% if quiz.monitoring_enabled %}
+<div id="consent-modal" class="modal-backdrop take-modal">
+    <div class="take-modal-card">
+        <button id="decline-consent-x" class="modal-close take-modal-close" type="button">&times;</button>
+        <div class="take-consent-icon">🛡</div>
+        <h2>Monitoring Consent Required</h2>
+        <p class="subhead">This quiz has activity monitoring enabled. Please review before proceeding.</p>
+
+        <div class="take-consent-box">
+            <strong>Activity Logging</strong>
+            <p>Tab switches, window changes, and copy/paste attempts will be logged.</p>
+        </div>
+        <div class="take-consent-box">
+            <strong>For Review Only</strong>
+            <p>Logs are flagged for instructor review. No automatic cheating judgment is made.</p>
+        </div>
+
+        <div class="take-modal-actions">
+            <button id="decline-consent" class="button secondary" type="button">Decline</button>
+            <button id="accept-consent" class="button primary" type="button">I Consent</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div id="submit-modal" class="modal-backdrop take-modal" hidden>
+    <div class="take-modal-card submit-confirm-card">
+        <h2>Submit Quiz?</h2>
+        <p class="subhead">You have answered <span id="submit-answered-count">0</span> out of {{ quiz.questions|length }} questions.</p>
+        <div class="take-modal-actions end">
+            <button id="review-answers" class="button secondary" type="button">Review Answers</button>
+            <button id="confirm-submit" class="button primary" type="button">Submit</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("quiz-submit-form");
+    const submitModal = document.getElementById("submit-modal");
+    const openSubmitModal = document.getElementById("open-submit-modal");
+    const reviewAnswers = document.getElementById("review-answers");
+    const confirmSubmit = document.getElementById("confirm-submit");
+    const answeredLabel = document.getElementById("answered-label");
+    const submitAnsweredCount = document.getElementById("submit-answered-count");
+    const timer = document.getElementById("countdown-timer");
+    const totalQuestions = {{ quiz.questions|length }};
+    const countdownSecondsStart = {{ quiz.time_limit_minutes * 60 }};
+    let countdownSeconds = countdownSecondsStart;
+
+    function updateAnsweredCount() {
+        const answered = document.querySelectorAll(".take-option input:checked").length;
+        if (answeredLabel) {
+            answeredLabel.textContent = `${answered}/${totalQuestions} answered`;
+        }
+        if (submitAnsweredCount) {
+            submitAnsweredCount.textContent = answered;
+        }
+    }
+
+    document.querySelectorAll(".take-option input").forEach((input) => {
+        input.addEventListener("change", () => {
+            updateAnsweredCount();
+            const option = input.closest(".take-option");
+            const group = input.closest(".take-options");
+            group.querySelectorAll(".take-option").forEach((item) => item.classList.remove("selected"));
+            if (option) {
+                option.classList.add("selected");
+            }
+        });
+    });
+
+    if (openSubmitModal && submitModal) {
+        openSubmitModal.addEventListener("click", () => {
+            updateAnsweredCount();
+            submitModal.hidden = false;
+            document.body.classList.add("modal-open");
+        });
+    }
+
+    if (reviewAnswers && submitModal) {
+        reviewAnswers.addEventListener("click", () => {
+            submitModal.hidden = true;
+            document.body.classList.remove("modal-open");
+        });
+    }
+
+    if (confirmSubmit && form) {
+        confirmSubmit.addEventListener("click", () => {
+            form.submit();
+        });
+    }
+
+    if (timer) {
+        const tick = () => {
+            const minutes = String(Math.floor(countdownSeconds / 60)).padStart(2, "0");
+            const seconds = String(countdownSeconds % 60).padStart(2, "0");
+            timer.textContent = `${minutes}:${seconds}`;
+            timer.classList.toggle("warning", countdownSeconds <= 300 && countdownSeconds > 120);
+            timer.classList.toggle("danger", countdownSeconds <= 120);
+            if (countdownSeconds <= 0) {
+                form.submit();
+                return;
+            }
+            countdownSeconds -= 1;
+            window.setTimeout(tick, 1000);
+        };
+        tick();
+    }
+
+    const consentModal = document.getElementById("consent-modal");
+    const acceptConsent = document.getElementById("accept-consent");
+    const declineConsent = document.getElementById("decline-consent");
+    const declineConsentX = document.getElementById("decline-consent-x");
+    const consentField = document.getElementById("consent-field");
+
+    function leaveQuiz() {
+        window.location.href = "{{ url_for('join_quiz', code=quiz.quiz_code) }}";
+    }
+
+    if (consentModal) {
+        document.body.classList.add("modal-open");
+    }
+
+    if (acceptConsent && consentModal && consentField) {
+        acceptConsent.addEventListener("click", () => {
+            consentField.value = "on";
+            consentModal.hidden = true;
+            document.body.classList.remove("modal-open");
+        });
+    }
+
+    if (declineConsent) {
+        declineConsent.addEventListener("click", leaveQuiz);
+    }
+
+    if (declineConsentX) {
+        declineConsentX.addEventListener("click", leaveQuiz);
+    }
+
+    updateAnsweredCount();
+});
+</script>
+
+{% if quiz.monitoring_enabled and realtime_enabled %}
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const quizId = "{{ quiz.id }}";
+    const monitoringStatus = document.getElementById("monitoring-status");
+    const consentModal = document.getElementById("consent-modal");
+    const acceptConsent = document.getElementById("accept-consent");
+    const declineConsent = document.getElementById("decline-consent");
+    const declineConsentX = document.getElementById("decline-consent-x");
+
+    const peerConnections = new Map();
+    let socket = null;
+    let localStream = null;
+    let cameraActive = false;
+
+    function setStatus(message) {
+        if (monitoringStatus) {
+            monitoringStatus.textContent = `Camera monitoring: ${message}`;
+        }
+    }
+
+    function ensureSocket() {
+        if (socket || !window.io) return;
+        socket = io();
+
+        socket.on("connect", () => {
+            socket.emit("join_monitor_room", { quizId, role: "user", cameraOn: cameraActive });
+            if (cameraActive) {
+                socket.emit("set_camera_status", { quizId, cameraOn: true });
+            }
+        });
+
+        socket.on("monitor_error", (payload) => {
+            setStatus((payload || {}).message || "realtime unavailable");
+        });
+
+        socket.on("webrtc_offer", async (payload) => {
+            if (!cameraActive || !localStream || !payload || !payload.senderSid || !payload.description) {
+                return;
+            }
+            const viewerSid = payload.senderSid;
+            let pc = peerConnections.get(viewerSid);
+            if (!pc) {
+                pc = new RTCPeerConnection({
+                    iceServers: [{ urls: ["stun:stun.l.google.com:19302"] }],
+                });
+                localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+                pc.onicecandidate = (event) => {
+                    if (!event.candidate || !socket) return;
+                    socket.emit("webrtc_ice_candidate", {
+                        quizId,
+                        targetSid: viewerSid,
+                        candidate: event.candidate,
+                    });
+                };
+                pc.onconnectionstatechange = () => {
+                    if (["failed", "closed", "disconnected"].includes(pc.connectionState)) {
+                        try {
+                            pc.close();
+                        } catch (_) {
+                            // Ignore close race conditions.
+                        }
+                        peerConnections.delete(viewerSid);
+                    }
+                };
+                peerConnections.set(viewerSid, pc);
+            }
+
+            try {
+                await pc.setRemoteDescription(new RTCSessionDescription(payload.description));
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                socket.emit("webrtc_answer", {
+                    quizId,
+                    targetSid: viewerSid,
+                    description: pc.localDescription,
+                });
+            } catch (_) {
+                setStatus("connection error");
+            }
+        });
+
+        socket.on("webrtc_ice_candidate", async (payload) => {
+            const senderSid = payload && payload.senderSid;
+            const pc = senderSid ? peerConnections.get(senderSid) : null;
+            if (!pc || !payload.candidate) return;
+            try {
+                await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
+            } catch (_) {
+                // Ignore transient ICE errors during negotiation.
+            }
+        });
+
+        socket.on("participant_left", (payload) => {
+            const sid = payload && payload.sid;
+            const pc = sid ? peerConnections.get(sid) : null;
+            if (!pc) return;
+            try {
+                pc.close();
+            } catch (_) {
+                // Ignore close race conditions.
+            }
+            peerConnections.delete(sid);
+        });
+    }
+
+    async function startCameraMonitoring() {
+        if (cameraActive) return;
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            cameraActive = true;
+            setStatus("live");
+            ensureSocket();
+            if (socket && socket.connected) {
+                socket.emit("set_camera_status", { quizId, cameraOn: true });
+            }
+        } catch (_) {
+            setStatus("camera permission denied");
+        }
+    }
+
+    function stopCameraMonitoring() {
+        cameraActive = false;
+        if (localStream) {
+            localStream.getTracks().forEach((track) => track.stop());
+            localStream = null;
+        }
+        if (socket && socket.connected) {
+            socket.emit("set_camera_status", { quizId, cameraOn: false });
+        }
+        peerConnections.forEach((pc) => {
+            try {
+                pc.close();
+            } catch (_) {
+                // Ignore close race conditions.
+            }
+        });
+        peerConnections.clear();
+        setStatus("off");
+    }
+
+    if (!consentModal) {
+        startCameraMonitoring();
+    }
+
+    if (acceptConsent) {
+        acceptConsent.addEventListener("click", startCameraMonitoring);
+    }
+    if (declineConsent) {
+        declineConsent.addEventListener("click", stopCameraMonitoring);
+    }
+    if (declineConsentX) {
+        declineConsentX.addEventListener("click", stopCameraMonitoring);
+    }
+
+    window.addEventListener("beforeunload", () => {
+        stopCameraMonitoring();
+        if (socket) {
+            socket.disconnect();
+        }
+    });
+});
+</script>
+{% elif quiz.monitoring_enabled and not realtime_enabled %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const monitoringStatus = document.getElementById("monitoring-status");
+    if (!monitoringStatus) return;
+    monitoringStatus.textContent = "Camera monitoring: unavailable (install Flask-SocketIO)";
+});
+</script>
+{% endif %}
+{% endif %}
+{% endblock %}

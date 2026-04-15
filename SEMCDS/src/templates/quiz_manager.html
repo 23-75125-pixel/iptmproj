@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Quiz Manager{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">Instructor Workspace</p>
+        <h1>My Quizzes</h1>
+        <p class="subhead">{{ quizzes|length }} total quizzes</p>
+    </div>
+    <a class="button primary" href="{{ url_for('create_quiz') }}">Create New Quiz</a>
+</section>
+
+{% if message %}
+<section class="manager-banner">
+    <div class="schedule-message success-message">{{ message }}</div>
+</section>
+{% endif %}
+
+<form class="quiz-toolbar" method="get">
+    <div class="search-shell">
+        <span class="search-icon">⌕</span>
+        <input type="text" name="q" value="{{ search or '' }}" placeholder="Search quizzes...">
+    </div>
+    <div class="filter-pills">
+        <button class="filter-pill {% if status_filter == 'all' %}active{% endif %}" name="status" value="all" type="submit">All</button>
+        <button class="filter-pill {% if status_filter == 'draft' %}active{% endif %}" name="status" value="draft" type="submit">Draft</button>
+        <button class="filter-pill {% if status_filter == 'published' %}active{% endif %}" name="status" value="published" type="submit">Published</button>
+        <button class="filter-pill {% if status_filter == 'closed' %}active{% endif %}" name="status" value="closed" type="submit">Closed</button>
+    </div>
+</form>
+
+<section class="quiz-grid">
+    {% for quiz in quizzes %}
+    {% set quiz_attempt_count = attempts | selectattr('quiz_id', 'equalto', quiz.id) | list | length %}
+    {% set primary_href = url_for('create_quiz', quizId=quiz.id) if quiz.status == 'draft' else url_for('quiz_results', quizId=quiz.id) %}
+    <article class="recent-quiz-card manager-card">
+        <div class="recent-top">
+            <div>
+                <h3>{{ quiz.title }}</h3>
+                <p>{{ quiz.subject }}</p>
+            </div>
+            <div class="manager-card-actions">
+                <span class="status-pill {{ quiz.status }}">{{ quiz.status }}</span>
+                <details class="quiz-card-menu">
+                    <summary class="quiz-card-menu-trigger" aria-label="Quiz actions">
+                        <span></span><span></span><span></span>
+                    </summary>
+                    <div class="quiz-card-menu-list">
+                        {% if quiz.status == 'draft' %}
+                        <a href="{{ url_for('create_quiz', quizId=quiz.id) }}">Edit Quiz</a>
+                        <a href="{{ url_for('create_quiz', quizId=quiz.id) }}">Continue Draft</a>
+                        <form method="post" action="{{ url_for('quiz_action') }}">
+                            <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+                            <button type="submit" name="action" value="delete" class="danger">Delete Draft</button>
+                        </form>
+                        {% elif quiz.status == 'published' %}
+                        <a href="{{ url_for('quiz_results', quizId=quiz.id) }}">View Results</a>
+                        <button type="button" class="copy-code-button" data-quiz-code="{{ quiz.quiz_code }}">Copy Code</button>
+                        <form method="post" action="{{ url_for('quiz_action') }}">
+                            <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+                            <button type="submit" name="action" value="close">Close Quiz</button>
+                        </form>
+                        <form method="post" action="{{ url_for('quiz_action') }}">
+                            <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+                            <button type="submit" name="action" value="delete" class="danger">Delete</button>
+                        </form>
+                        {% else %}
+                        <a href="{{ url_for('quiz_results', quizId=quiz.id) }}">View Results</a>
+                        <form method="post" action="{{ url_for('quiz_action') }}">
+                            <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+                            <button type="submit" name="action" value="reopen">Reopen Quiz</button>
+                        </form>
+                        <form method="post" action="{{ url_for('quiz_action') }}">
+                            <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+                            <button type="submit" name="action" value="delete" class="danger">Delete</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </details>
+            </div>
+        </div>
+        <p class="recent-description">{{ quiz.description }}</p>
+        <div class="recent-meta">
+            <span>{{ quiz.time_limit_minutes }} min</span>
+            <span>{{ quiz.questions|length }} questions</span>
+            <span>{{ quiz_attempt_count }} attempts</span>
+            {% if quiz.monitoring_enabled %}<span class="monitored">Monitored</span>{% endif %}
+        </div>
+        <div class="recent-code">CODE: <strong>{{ quiz.quiz_code }}</strong></div>
+        <div class="manager-card-footer">
+            {% if quiz.status == 'draft' %}
+            <a class="button secondary manager-card-button" href="{{ primary_href }}">Edit Quiz</a>
+            <p class="manager-card-note">Draft quizzes can still be updated before publishing.</p>
+            {% elif quiz.status == 'published' %}
+            <a class="button primary manager-card-button" href="{{ primary_href }}">View Result</a>
+            <p class="manager-card-note">Published quizzes show who already took the exam.</p>
+            {% else %}
+            <a class="button primary manager-card-button" href="{{ primary_href }}">View Result</a>
+            <p class="manager-card-note">Closed quizzes are locked, but results stay available for review.</p>
+            {% endif %}
+        </div>
+    </article>
+    {% else %}
+    <article class="panel empty-state-panel">
+        <h3>No quizzes found</h3>
+       
+    </article>
+    {% endfor %}
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".copy-code-button").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const code = button.dataset.quizCode || "";
+            try {
+                await navigator.clipboard.writeText(code);
+                button.textContent = "Copied!";
+                setTimeout(() => {
+                    button.textContent = "Copy Code";
+                }, 1400);
+            } catch (error) {
+                button.textContent = code;
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

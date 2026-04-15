@@ -1,0 +1,546 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 19:50:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 19:50:51] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 19:50:52] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Mar/2026 19:50:53] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 19:50:53] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 19:50:53] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 19:50:53] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:04:57] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:04:57] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:04:59] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:04:59] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:05:01] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:05:01] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:05:02] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:05:02] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:08:22] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:08:22] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:13:26] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:13:26] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:13:31] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:13:31] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:13:31] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:13:31] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:14:30] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:14:30] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:14:55] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:14:55] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:14:59] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:14:59] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:15:03] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:15:03] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:15:05] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:15:05] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:19:53] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:19:53] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:19:57] "GET /Dashboard?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:19:57] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 20:23:41] "GET /Dashboard?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:23:41] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:24:16] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:24:16] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:24:29] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&severity=high HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:24:29] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:24:33] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:24:33] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 20:25:16] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:16] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:17] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:17] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:20] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:20] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:21] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:21] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:21] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:21] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:29] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:29] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:31] "GET /QuizManager?q=&status=draft HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:31] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:31] "GET /QuizManager?q=&status=published HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:32] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:33] "GET /QuizManager?q=&status=closed HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:33] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:35] "GET /QuizManager?q=&status=all HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:35] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:36] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:36] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:37] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&severity=low HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:37] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:38] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&severity=medium HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:38] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:38] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&severity=high HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:38] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:39] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&reviewed=unreviewed HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:39] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:39] "GET /ActivityMonitor?liveQuizId=&quizId=all&student=&reviewed=reviewed HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:39] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:40] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:40] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:25:42] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:25:42] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:06] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:06] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:08] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:26:08] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:08] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:09] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:26:09] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:09] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:33] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:26:33] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:33] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:37] "GET /Dashboard?quizId=quiz-001&analyzed=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:37] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:44] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:44] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:45] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:45] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:26:46] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:26:46] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\data.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 20:32:38] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:39] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:40] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:32:40] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:40] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:32:49] "GET /Dashboard?month=2026-03&day=2026-03-09 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:49] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:32:55] "GET /Dashboard?month=2026-04 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:55] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:32:57] "GET /Dashboard?month=2026-04&day=2026-04-04 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:32:57] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:33:03] "GET /Dashboard?month=2026-04&day=2026-04-04 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:33:03] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:33:05] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:33:05] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:33:07] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:33:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:33:21] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:33:21] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:33:28] "GET /Dashboard?month=2026-03&day=2026-03-31 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:33:28] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:37:44] "GET /Dashboard?month=2026-03&day=2026-03-31 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:45] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:48] "GET /Dashboard?month=2026-03&day=2026-03-23 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:48] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:37:49] "GET /Dashboard?month=2026-03&day=2026-03-18 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:50] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:37:51] "GET /Dashboard?month=2026-03&day=2026-03-03 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:51] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:37:53] "GET /Dashboard?month=2026-03&day=2026-03-16 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:53] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:37:55] "GET /Dashboard?month=2026-03&day=2026-03-01 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:37:55] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:22] "GET /Dashboard?month=2026-03&day=2026-03-01 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:22] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:23] "GET /Dashboard?month=2026-03&day=2026-03-02 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:23] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:24] "GET /Dashboard?month=2026-03&day=2026-03-03 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:24] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:26] "GET /Dashboard?month=2026-03&day=2026-03-04 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:26] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:27] "GET /Dashboard?month=2026-03&day=2026-03-11 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:27] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:28] "GET /Dashboard?month=2026-03&day=2026-03-19 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:29] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:30] "GET /Dashboard?month=2026-03&day=2026-03-31 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:30] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:36] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:36] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:39:37] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:39:37] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:41:15] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:41:15] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:41:18] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:41:18] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:41:19] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:41:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:41:19] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:41:21] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:41:21] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:41:21] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:41:21] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:42:27] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:42:27] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:42:45] "GET /JoinQuiz?code= HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:42:45] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:42:46] "GET /JoinQuiz?code= HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:42:46] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\data.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 20:54:32] "GET /JoinQuiz?code= HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:32] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:34] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:34] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:38] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:38] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:41] "GET /JoinQuiz?code=ON3DRR HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:41] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:42] "GET /JoinQuiz?code=ON3DRR HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:42] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:42] "GET /JoinQuiz?code=ON3DRR HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:43] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:44] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:44] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:49] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:49] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 20:54:51] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 20:54:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 20:54:51] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\data.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 21:06:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:13] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:14] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:06:14] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:06:14] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:15] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:17] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:17] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:19] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:19] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:24] "GET /ActivityMonitor HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:24] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:27] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:27] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:28] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:28] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:49] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:06:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:49] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:50] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:06:50] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:06:50] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:50] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:52] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:52] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:06:54] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:06:54] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:07] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:10] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:10] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:10] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:10] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:13] "GET /Dashboard?month=2026-03&day=2026-03-31 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:13] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:20] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:20] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:25] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:25] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:48] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:48] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:56] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:07:58] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:58] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:07:58] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:07:58] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:08:00] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:08:00] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:08:00] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:08:00] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:08:13] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:08:13] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 21:26:09] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:26:09] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:26:11] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:26:11] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:26:15] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:26:15] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:26:29] "GET /CreateQuiz?quizId=quiz-003 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:26:29] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 21:32:39] "GET /CreateQuiz?quizId=quiz-003 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:32:39] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:33:22] "POST /CreateQuiz?quizId=quiz-003 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:33:22] "GET /CreateQuiz?quizId=quiz-003&saved=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:33:22] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:33:49] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:33:49] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:33:56] "GET /JoinQuiz HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:33:56] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:33:56] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:33:56] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:33:59] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:33:59] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:34:05] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:34:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:34:05] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:34:06] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:34:06] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:34:06] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:34:06] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:34:08] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:34:08] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:34:11] "GET /JoinQuiz?code=+ETH-91QQ HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:34:11] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:35:02] "GET /QuizResults?quizId=quiz-003 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:35:02] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:35:02] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:35:02] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:35:07] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:35:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:35:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:35:08] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:35:08] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:35:08] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:35:08] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:35:12] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:35:12] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:35:35] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:35:35] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:32] "POST /CreateQuiz HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:32] "GET /CreateQuiz?quizId=quiz-001&saved=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:32] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:34] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:34] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:46] "GET /JoinQuiz HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:46] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:46] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:46] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:50] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:50] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:51] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:51] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:36:51] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:51] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:52] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:52] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:36:54] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:36:54] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:39:42] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:39:42] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:03] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:03] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:10] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:40:10] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:40:10] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:10] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:14] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:40:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:14] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:15] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:40:15] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:40:15] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:15] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:17] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:17] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:17] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:17] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:20] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:20] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:40:26] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:40:26] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:07] "POST /CreateQuiz HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:07] "GET /CreateQuiz?quizId=quiz-001&saved=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:08] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:08] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:30] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:30] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:30] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:30] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:33] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:33] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:34] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:34] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:41:34] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:34] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:35] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:35] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:41:37] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:41:37] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:43:23] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:43:23] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:03] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:04] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:07] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:07] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:08] "GET /TakeQuiz?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:08] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:29] "GET /TakeQuiz?quizId=quiz-001&submitted=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:29] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:42] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:45:42] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:45:42] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:42] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:44] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:45:44] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:44] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:45] "GET /signin/admin HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:45:45] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:45:45] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:46] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:47] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:47] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:45:49] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:45:49] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 21:48:19] "GET /QuizManager HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\SEMCDS\src\app.py", line 58, in wrapped
+    return view(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\SEMCDS\src\app.py", line 153, in quiz_manager
+    return render_template(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\templating.py", line 66, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lira Angela Ata\Documents\EggSort\.venv\Lib\site-packages\flask\templating.py", line 100, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: quiz_manager.html
+127.0.0.1 - - [30/Mar/2026 21:48:20] "GET /QuizManager?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:48:20] "GET /QuizManager?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:48:20] "GET /QuizManager?__debugger__=yes&cmd=resource&f=console.png&s=5Bm2bupH7mJFxdc38o61 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:48:20] "GET /QuizManager?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:13] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:13] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:16] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:16] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:53:22] "POST /QuizAction HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:53:22] "GET /QuizManager?message=Quiz+closed+successfully. HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:22] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:53:25] "GET /QuizResults?quizId=quiz-002 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:26] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:53:33] "GET /CreateQuiz?quizId=quiz-003 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:33] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:53:36] "POST /CreateQuiz?quizId=quiz-003 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:53:36] "GET /CreateQuiz?quizId=quiz-003&saved=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:53:36] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+127.0.0.1 - - [30/Mar/2026 21:57:21] "GET /CreateQuiz?quizId=quiz-003&saved=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:21] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:24] "POST /CreateQuiz?quizId=quiz-003&saved=1 HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:24] "GET /QuizManager?message=Draft+saved+successfully. HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:24] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:30] "GET /CreateQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:30] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:33] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:33] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:34] "GET /QuizResults?quizId=quiz-001 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:34] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:36] "GET /UserManagement HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:36] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:47] "GET /TakeQuiz?quizId=quiz-001&submitted=1 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:47] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:49] "GET /JoinQuiz?code=NET-4H2K HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:49] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:49] "GET /Dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:49] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:55] "GET /QuizManager HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:55] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:57] "GET /logout HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:57] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:58] "GET /signin/user HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:58] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:57:58] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:58] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:57:59] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:57:59] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:58:02] "GET /QuizManager HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:58:02] "GET /home HTTP/1.1" 302 -
+127.0.0.1 - - [30/Mar/2026 21:58:02] "GET /StudentDashboard HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:58:02] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [30/Mar/2026 21:58:04] "GET /JoinQuiz HTTP/1.1" 200 -
+127.0.0.1 - - [30/Mar/2026 21:58:05] "GET /static/css/style.css HTTP/1.1" 304 -
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\data.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 125-331-249
+ * Detected change in 'C:\\Users\\Lira Angela Ata\\Documents\\SEMCDS\\src\\app.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "C:\Users\Lira Angela Ata\Documents\SEMCDS\main.py", line 1, in <module>
+    from src.app import create_app
+  File "C:\Users\Lira Angela Ata\Documents\SEMCDS\src\__init__.py", line 1, in <module>
+    from .app import create_app
+  File "C:\Users\Lira Angela Ata\Documents\SEMCDS\src\app.py", line 6, in <module>
+    from timedelta import timedelta
+ModuleNotFoundError: No module named 'timedelta'

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Quiz Results{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">Instructor Analytics</p>
+        <h1>{{ quiz.title }}</h1>
+    </div>
+    <a class="button secondary" href="{{ url_for('quiz_manager') }}">Back to Quiz Manager</a>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card"><span>Submissions</span><strong>{{ metrics.submissions }}</strong></article>
+    <article class="stat-card"><span>Average Score</span><strong>{{ metrics.average_score }}%</strong></article>
+    <article class="stat-card"><span>Highest Score</span><strong>{{ metrics.highest_score }}%</strong></article>
+    <article class="stat-card"><span>Flags Count</span><strong>{{ metrics.flags_count }}</strong></article>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <div>
+            <p class="eyebrow">Per Student Results</p>
+            <h2>Submission Review</h2>
+        </div>
+        <button class="button tertiary" type="button">Export to CSV</button>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Status</th>
+                <th>Flag Count</th>
+                <th>Submission Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+            <tr>
+                <td>{{ attempt.student_name }}</td>
+                <td>{{ attempt.score }}/{{ attempt.total_points }}</td>
+                <td>{{ attempt.percentage }}%</td>
+                <td>{{ attempt.status }}</td>
+                <td>{{ all_flags | selectattr('attempt_id', 'equalto', attempt.id) | list | length }}</td>
+                <td>{{ attempt.submitted_at or 'Still active' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

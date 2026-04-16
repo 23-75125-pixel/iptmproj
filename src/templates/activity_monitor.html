@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Activity Monitor{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <h1>Activity Monitor</h1>
+        <p class="subhead">Review flagged activity events during quizzes. Flags are for review only.</p>
+    </div>
+    <form class="live-topbar" method="get" id="live-view-form">
+        <input type="hidden" name="quizId" value="{{ selected_quiz }}">
+        <input type="hidden" name="severity" value="{{ selected_severity }}">
+        <input type="hidden" name="reviewed" value="{{ selected_reviewed }}">
+        <input type="hidden" name="student" value="{{ search }}">
+        <select name="liveQuizId" id="live-quiz-select">
+            <option value="" {% if not live_quiz_id %}selected{% endif %}>Watch quiz live...</option>
+            {% for quiz in quizzes %}
+            <option value="{{ quiz.id }}" {% if live_quiz_id == quiz.id %}selected{% endif %}>{{ quiz.title }}</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit" name="live" value="1" id="live-view-btn">Live View</button>
+    </form>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const liveViewBtn = document.getElementById("live-view-btn");
+        const liveMonalBackdrop = document.getElementById("live-monitor-modal");
+
+        if (liveViewBtn) {
+            liveViewBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                
+                // FOR TESTING: Show live feed modal immediately without validation
+                if (liveMonalBackdrop) {
+                    liveMonalBackdrop.style.display = "flex";
+                    document.body.classList.add("modal-open");
+                }
+            });
+        }
+    });
+    </script>
+</section>
+
+<section class="activity-stats-grid">
+    <article class="stat-card">
+        <div class="stat-icon slate">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V6l8-4z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ stats.total_flags }}</strong>
+            <span>Total Events</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon amber">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3l9 16H3L12 3z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <circle cx="12" cy="17" r="1"></circle>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ stats.pending_review }}</strong>
+            <span>Unreviewed</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon mint">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="8"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ stats.reviewed }}</strong>
+            <span>Reviewed</span>
+        </div>
+    </article>
+</section>
+
+<form class="activity-filterbar" method="get">
+    <input type="hidden" name="liveQuizId" value="{{ live_quiz_id }}">
+    {% if live_mode %}<input type="hidden" name="live" value="1">{% endif %}
+    <input type="hidden" name="quizId" value="{{ selected_quiz }}">
+    <div class="search-shell activity-search">
+        <span class="search-icon">⌕</span>
+        <input type="text" name="student" placeholder="Search by student name or email..." value="{{ search }}">
+    </div>
+    <div class="activity-pill-groups">
+        <div class="filter-pills">
+            <button class="filter-pill active" type="submit" name="severity" value="all">All</button>
+        </div>
+    </div>
+</form>
+
+<section class="monitor-layout {% if live_mode %}live-open{% endif %}">
+    <article class="panel activity-table-panel">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Quiz</th>
+                    <th>Event</th>
+                    <th>Level</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>
+                        <strong>{{ log.student_name }}</strong>
+                        <div class="table-subtext">{{ log.student_email }}</div>
+                    </td>
+                    <td>{{ (quizzes | selectattr('id', 'equalto', log.quiz_id) | list | first).title if (quizzes | selectattr('id', 'equalto', log.quiz_id) | list) else log.quiz_id }}</td>
+                    <td>
+                        <strong>{{ log.event_type.replace('_', ' ').title() }}</strong>
+                        <div class="table-subtext">{{ log.event_description }}</div>
+                    </td>
+                    <td><span class="pill severity-{{ log.flag_level }}">{{ log.flag_level }}</span></td>
+                    <td>{{ log.timestamp }}</td>
+                    <td><span class="status-badge">{{ 'Pending' if not log.reviewed else 'Reviewed' }}</span></td>
+                    <td><a class="review-link" href="#">Review</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+</section>
+
+{% if live_mode or true %}
+<!-- Testing: show live feed modal on button click -->
+<div class="modal-backdrop" id="live-monitor-modal" style="display:none;">
+    <aside class="live-drawer live-monitor-modal">
+        <div class="live-drawer-head">
+            <div>
+                <p class="drawer-kicker">Live Monitor</p>
+                <h2>{{ live_quiz.title }}</h2>
+                <div class="live-drawer-stats">
+                    <span>{{ live_students|length }} active</span>
+                    <span>{{ live_logs|length }} events</span>
+                </div>
+            </div>
+            <a class="drawer-close" href="{{ url_for('activity_monitor', quizId=selected_quiz, severity=selected_severity, reviewed=selected_reviewed, student=search) }}">x</a>
+        </div>
+
+        <section class="panel live-camera-panel" style="margin: 0 0 0.9rem; padding: 1rem; width:100%;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.8rem;flex-wrap:wrap;">
+                <div>
+                    <h3 style="margin:0;font-size:1rem;">Live Camera Feed</h3>
+                   
+                </div>
+                <span id="camera-feed-count" class="status-badge">0 Live</span>
+            </div>
+            <div id="camera-monitoring-error" class="schedule-message blocked" style="display:none;margin:0.9rem 0 0;"></div>
+            <div id="camera-feed-grid" class="live-camera-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.7rem;margin-top:0.9rem;width:100%;">
+                {% for _ in range(10) %}
+                <article class="panel camera-slot placeholder" style="margin:0;padding:0.65rem;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+                        <strong style="font-size:0.82rem;line-height:1.2;color:#6b7280;">Waiting for student</strong>
+                        <span class="pill" style="font-size:0.7rem;opacity:0.85;">Idle</span>
+                    </div>
+                    <div style="width:100%;height:clamp(140px,22vh,210px);border-radius:10px;background:#111827;display:grid;place-items:center;color:#ffffff;font-size:0.78rem;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:0.95;">
+                            <path d="M23 7l-7 5 7 5V7z"></path>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if live_logs %}
+        <div class="live-drawer-body">
+            {% for log in live_logs %}
+            <div class="live-event-card severity-{{ log.flag_level }}">
+                <div class="live-event-top">
+                    <strong>{{ log.student_name }}</strong>
+                    <span class="pill severity-{{ log.flag_level }}">{{ log.flag_level }}</span>
+                </div>
+                <p class="live-event-type">{{ log.event_type.replace('_', ' ').title() }}</p>
+                <p class="live-event-text">{{ log.event_description }}</p>
+                <div class="live-event-meta">
+                    <span>{{ log.timestamp }}</span>
+                    <span>{% if log.reviewed %}Reviewed{% else %}Flagged{% endif %}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="live-empty">
+            <div class="live-empty-icon">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 8h18"></path>
+                    <path d="M7 12h10"></path>
+                    <path d="M10 16h4"></path>
+                </svg>
+            </div>
+            <p>No events yet</p>
+        </div>
+        {% endif %}
+    </aside>
+</div>
+{% endif %}
+
+{% if live_mode and realtime_enabled %}
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const quizId = "{{ live_quiz.id if live_quiz else '' }}";
+    const feedGrid = document.getElementById("camera-feed-grid");
+    const feedCount = document.getElementById("camera-feed-count");
+    const errorBox = document.getElementById("camera-monitoring-error");
+    if (!quizId || !feedGrid || !window.io) {
+        return;
+    }
+
+    const socket = io();
+    const peers = new Map();
+    const tiles = new Map();
+    const participants = new Map();
+
+    function updateCount() {
+        if (feedCount) {
+            feedCount.textContent = `${tiles.size} Live`;
+        }
+    }
+
+    function showError(message) {
+        if (!errorBox) return;
+        errorBox.style.display = "block";
+        errorBox.textContent = message;
+    }
+
+    function hideError() {
+        if (!errorBox) return;
+        errorBox.style.display = "none";
+        errorBox.textContent = "";
+    }
+
+    function ensureTile(participant) {
+        if (tiles.has(participant.sid)) return tiles.get(participant.sid);
+
+        const card = document.createElement("article");
+        card.className = "panel camera-slot";
+        card.style.margin = "0";
+        card.style.padding = "0.65rem";
+
+        const name = document.createElement("div");
+        name.style.display = "flex";
+        name.style.justifyContent = "space-between";
+        name.style.alignItems = "center";
+        name.style.gap = "0.5rem";
+        name.style.marginBottom = "0.5rem";
+        name.innerHTML = `<strong style="font-size:0.82rem;line-height:1.2;">${participant.display_name || "Student"}</strong><span class="pill" style="font-size:0.7rem;">Live</span>`;
+
+        const video = document.createElement("video");
+        video.autoplay = true;
+        video.playsInline = true;
+        video.style.width = "100%";
+        video.style.height = "clamp(140px, 22vh, 210px)";
+        video.style.objectFit = "cover";
+        video.style.borderRadius = "10px";
+        video.style.background = "#111827";
+
+        card.appendChild(name);
+        card.appendChild(video);
+
+        const placeholder = feedGrid.querySelector(".camera-slot.placeholder");
+        if (placeholder) {
+            placeholder.replaceWith(card);
+        } else {
+            feedGrid.appendChild(card);
+        }
+
+        const tile = { card, video };
+        tiles.set(participant.sid, tile);
+        updateCount();
+        return tile;
+    }
+
+    function createPlaceholderTile() {
+        const card = document.createElement("article");
+        card.className = "panel camera-slot placeholder";
+        card.style.margin = "0";
+        card.style.padding = "0.65rem";
+
+        const head = document.createElement("div");
+        head.style.display = "flex";
+        head.style.justifyContent = "space-between";
+        head.style.alignItems = "center";
+        head.style.gap = "0.5rem";
+        head.style.marginBottom = "0.5rem";
+        head.innerHTML = '<strong style="font-size:0.82rem;line-height:1.2;color:#6b7280;">Waiting for student</strong><span class="pill" style="font-size:0.7rem;opacity:0.85;">Idle</span>';
+
+        const body = document.createElement("div");
+        body.style.width = "100%";
+        body.style.height = "clamp(140px, 22vh, 210px)";
+        body.style.borderRadius = "10px";
+        body.style.background = "#111827";
+        body.style.display = "grid";
+        body.style.placeItems = "center";
+        body.style.color = "#ffffff";
+        body.style.fontSize = "0.78rem";
+        body.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:0.95;"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>';
+
+        card.appendChild(head);
+        card.appendChild(body);
+        return card;
+    }
+
+    function removeTile(sid) {
+        const tile = tiles.get(sid);
+        if (!tile) return;
+        tile.video.srcObject = null;
+        tile.card.replaceWith(createPlaceholderTile());
+        tiles.delete(sid);
+        updateCount();
+    }
+
+    function closePeer(sid) {
+        const pc = peers.get(sid);
+        if (pc) {
+            pc.ontrack = null;
+            pc.onicecandidate = null;
+            pc.close();
+            peers.delete(sid);
+        }
+        removeTile(sid);
+    }
+
+    function createPeerForStudent(participant) {
+        if (!participant || participant.role !== "user" || !participant.camera_on) return;
+        if (peers.has(participant.sid)) return;
+
+        const pc = new RTCPeerConnection({
+            iceServers: [{ urls: ["stun:stun.l.google.com:19302"] }],
+        });
+
+        peers.set(participant.sid, pc);
+
+        pc.addTransceiver("video", { direction: "recvonly" });
+        pc.addTransceiver("audio", { direction: "recvonly" });
+
+        pc.ontrack = (event) => {
+            const tile = ensureTile(participant);
+            tile.video.srcObject = event.streams[0];
+        };
+
+        pc.onicecandidate = (event) => {
+            if (!event.candidate) return;
+            socket.emit("webrtc_ice_candidate", {
+                quizId,
+                targetSid: participant.sid,
+                candidate: event.candidate,
+            });
+        };
+
+        pc.onconnectionstatechange = () => {
+            if (["failed", "closed", "disconnected"].includes(pc.connectionState)) {
+                closePeer(participant.sid);
+            }
+        };
+
+        pc.createOffer()
+            .then((offer) => pc.setLocalDescription(offer))
+            .then(() => {
+                socket.emit("webrtc_offer", {
+                    quizId,
+                    targetSid: participant.sid,
+                    description: pc.localDescription,
+                });
+            })
+            .catch(() => closePeer(participant.sid));
+    }
+
+    function syncParticipant(participant) {
+        if (!participant || !participant.sid) return;
+        participants.set(participant.sid, participant);
+        if (participant.role !== "user") return;
+        if (participant.camera_on) {
+            createPeerForStudent(participant);
+        } else {
+            closePeer(participant.sid);
+        }
+    }
+
+    socket.on("connect", () => {
+        hideError();
+        socket.emit("join_monitor_room", { quizId, role: "admin", cameraOn: false });
+    });
+
+    socket.on("room_snapshot", (payload) => {
+        (payload.participants || []).forEach(syncParticipant);
+    });
+
+    socket.on("participant_joined", (participant) => {
+        syncParticipant(participant);
+    });
+
+    socket.on("participant_updated", (participant) => {
+        syncParticipant(participant);
+    });
+
+    socket.on("participant_left", (payload) => {
+        const sid = (payload || {}).sid;
+        if (!sid) return;
+        participants.delete(sid);
+        closePeer(sid);
+    });
+
+    socket.on("webrtc_answer", async (payload) => {
+        const sid = payload.senderSid;
+        const pc = peers.get(sid);
+        if (!pc || !payload.description) return;
+        try {
+            await pc.setRemoteDescription(new RTCSessionDescription(payload.description));
+        } catch (_) {
+            closePeer(sid);
+        }
+    });
+
+    socket.on("webrtc_ice_candidate", async (payload) => {
+        const sid = payload.senderSid;
+        const pc = peers.get(sid);
+        if (!pc || !payload.candidate) return;
+        try {
+            await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
+        } catch (_) {
+            // Ignore transient ICE errors while peers negotiate.
+        }
+    });
+
+    socket.on("monitor_error", (payload) => {
+        const message = (payload || {}).message;
+        if (!message) return;
+        showError(message);
+    });
+
+    window.addEventListener("beforeunload", () => {
+        peers.forEach((_, sid) => closePeer(sid));
+        socket.disconnect();
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

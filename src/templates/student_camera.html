@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Camera Feed{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <h1>Live Camera Monitoring</h1>
+        <p class="subhead">Use your webcam to verify the face detection model in real time.</p>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <div>
+            <h2>Camera Feed</h2>
+            <p class="subhead">Start the camera and allow access to run YOLO face detection.</p>
+        </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div class="relative overflow-hidden rounded-3xl border border-gray-200 bg-black/90 p-4">
+            <video id="camera-preview" autoplay muted playsinline class="w-full h-auto rounded-3xl bg-black"></video>
+            <canvas id="detection-canvas" class="absolute inset-0 w-full h-full"></canvas>
+        </div>
+
+        <div class="space-y-4">
+            <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+                <h3 class="text-lg font-semibold">Controls</h3>
+                <div class="mt-4 flex flex-col gap-3">
+                    <button id="start-camera" class="button primary w-full">Start Camera</button>
+                    <button id="stop-camera" class="button secondary w-full">Stop Camera</button>
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+                <h3 class="text-lg font-semibold">Detection Status</h3>
+                <p id="camera-status" class="mt-3 text-sm text-gray-600">Camera is inactive.</p>
+                <p id="detection-summary" class="mt-3 text-sm text-gray-600">Waiting for the first frame.</p>
+            </div>
+
+            
+        </div>
+    </div>
+</section>
+
+<script>
+const preview = document.getElementById('camera-preview');
+const canvas = document.getElementById('detection-canvas');
+const statusEl = document.getElementById('camera-status');
+const summaryEl = document.getElementById('detection-summary');
+const startButton = document.getElementById('start-camera');
+const stopButton = document.getElementById('stop-camera');
+
+let stream = null;
+let timer = null;
+let ctx = null;
+
+function resizeCanvas() {
+    if (!preview.videoWidth || !preview.videoHeight) return;
+    canvas.width = preview.videoWidth;
+    canvas.height = preview.videoHeight;
+    canvas.style.width = preview.clientWidth + 'px';
+    canvas.style.height = preview.clientHeight + 'px';
+    ctx = canvas.getContext('2d');
+}
+
+function setStatus(text) {
+    statusEl.textContent = text;
+}
+
+function setSummary(text) {
+    summaryEl.textContent = text;
+}
+
+async function openCamera() {
+    try {
+        // Check if getUserMedia is available
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setStatus('Camera API not available. Use HTTPS or localhost.');
+            setSummary('getUserMedia is only available in secure contexts (HTTPS or localhost). Try accessing via http://127.0.0.1:5000');
+            return;
+        }
+        
+        stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
+        preview.srcObject = stream;
+        await preview.play();
+        resizeCanvas();
+        setStatus('Camera active. Detecting faces...');
+        setSummary('Sending frames to the server for YOLO detection.');
+        timer = setInterval(sendFrameForDetection, 1200);
+    } catch (error) {
+        if (error.name === 'NotAllowedError') {
+            setStatus('Camera permission denied.');
+            setSummary('Please allow camera access when prompted by your browser.');
+        } else if (error.name === 'NotFoundError') {
+            setStatus('No camera found.');
+            setSummary('Please connect a camera or webcam to your device.');
+        } else {
+            setStatus('Camera access error.');
+            setSummary(error.message || 'Unable to open webcam.');
+        }
+    }
+}
+
+
+function closeCamera() {
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
+    if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        stream = null;
+    }
+    preview.pause();
+    preview.srcObject = null;
+    if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    setStatus('Camera is inactive.');
+    setSummary('Start the camera to run detection.');
+}
+
+async function sendFrameForDetection() {
+    if (!preview || preview.readyState < 2) return;
+    resizeCanvas();
+
+    const captureCanvas = document.createElement('canvas');
+    captureCanvas.width = preview.videoWidth;
+    captureCanvas.height = preview.videoHeight;
+    const captureCtx = captureCanvas.getContext('2d');
+    captureCtx.drawImage(preview, 0, 0, captureCanvas.width, captureCanvas.height);
+
+    try {
+        const dataUrl = captureCanvas.toDataURL('image/jpeg', 0.7);
+        const response = await fetch('{{ url_for("detect_face") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: dataUrl }),
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            setSummary(data.error || 'Detection request failed.');
+            return;
+        }
+
+        const result = await response.json();
+        drawDetections(result.detections || []);
+        if (result.detections && result.detections.length > 0) {
+            const normalCount = result.detections.filter(d => d.type === 'normal').length;
+            const cheatingCount = result.detections.filter(d => d.type === 'cheating').length;
+            const summary = `${normalCount} normal${cheatingCount > 0 ? `, ${cheatingCount} suspicious` : ''}`;
+            setSummary(summary);
+        } else {
+            setSummary('No faces detected');
+        }
+    } catch (error) {
+        setSummary('Detection request failed.');
+    }
+}
+
+function drawDetections(detections) {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (const detection of detections) {
+        const [x1, y1, x2, y2] = detection.bbox;
+        const width = x2 - x1;
+        const height = y2 - y1;
+        const isNormal = detection.type === "normal";
+        
+        // Set colors based on detection type
+        const boxColor = isNormal ? '#22c55e' : '#ef4444';  // green for normal, red for cheating
+        const fillColor = isNormal ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)';  // semi-transparent fill
+        
+        // Draw filled bounding box
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(x1, y1, width, height);
+        
+        // Draw bounding box outline
+        ctx.strokeStyle = boxColor;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x1, y1, width, height);
+        
+        // Draw label with white text for better visibility
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px Arial';
+        const label = `${detection.label} ${(detection.confidence * 100).toFixed(0)}%`;
+        ctx.fillText(label, x1 + 4, Math.max(y1 - 8, 18));
+    }
+}
+
+startButton.addEventListener('click', openCamera);
+stopButton.addEventListener('click', closeCamera);
+window.addEventListener('resize', resizeCanvas);
+</script>
+{% endblock %}

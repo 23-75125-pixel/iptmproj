@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}SEMCDS | Student Dashboard{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <h1>Welcome back, {{ user.full_name.split(' ')[0] }}!</h1>
+        <p class="subhead">Here's your learning progress</p>
+    </div>
+</section>
+
+<section class="activity-stats-grid student-stats-grid">
+    <article class="stat-card">
+        <div class="stat-icon rose" style="display: flex; align-items: center; justify-content: center;">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="11" x2="12" y2="17"></line>
+                <line x1="9" y1="14" x2="15" y2="14"></line>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ summary.quizzes_taken }}</strong>
+            <span>Quizzes Taken</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon mint" style="display: flex; align-items: center; justify-content: center;">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="20" x2="20" y2="20"></line>
+                <rect x="4" y="11" width="3" height="7"></rect>
+                <rect x="9" y="8" width="3" height="10"></rect>
+                <rect x="14" y="5" width="3" height="13"></rect>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ summary.average_score }}%</strong>
+            <span>Average Score</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon amber" style="display: flex; align-items: center; justify-content: center;">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path>
+                <path d="M6 9h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9z"></path>
+                <path d="M9 12l1.5 2 3-4" stroke="currentColor" stroke-width="2"></path>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ summary.best_score }}%</strong>
+            <span>Best Score</span>
+        </div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-icon blue" style="display: flex; align-items: center; justify-content: center;">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div>
+            <strong>{{ summary.passed_count }}</strong>
+            <span>Passed (≥75%)</span>
+        </div>
+    </article>
+</section>
+
+<section class="two-column student-progress-grid">
+    <article class="panel">
+        <div class="panel-head">
+            <div>
+                <h2>Recent Performance</h2>
+            </div>
+        </div>
+        <div class="student-chart">
+            {% for item in summary.performance %}
+            <div class="student-bar-group">
+                <div class="student-bar-track">
+                    <div class="student-bar-fill" data-height="{{ item.percentage }}"></div>
+                </div>
+                <span>{{ item.short_label }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-head">
+            <div>
+                <h2>Performance</h2>
+            </div>
+        </div>
+        <div class="performance-item">
+            <div class="performance-line"><span>Pass Rate</span><strong>{{ summary.pass_rate }}%</strong></div>
+            <div class="progress-track"><div class="progress-fill" data-width="{{ summary.pass_rate }}"></div></div>
+        </div>
+        <div class="performance-item">
+            <div class="performance-line"><span>Average Score</span><strong>{{ summary.average_score }}%</strong></div>
+            <div class="progress-track"><div class="progress-fill dark" data-width="{{ summary.average_score }}"></div></div>
+        </div>
+        <div class="student-note">{{ "Great work!" if summary.average_score >= 75 else "Good start!" }}</div>
+    </article>
+</section>
+
+<section class="student-cta">
+    <div>
+        <h2>Ready to take a quiz?</h2>
+        <p>Enter your quiz code to start</p>
+    </div>
+    <div class="flex flex-col gap-3 sm:flex-row">
+        <a class="button secondary student-cta-button" href="{{ url_for('join_quiz') }}">Join Quiz -></a>
+        <a class="button primary student-cta-button" href="{{ url_for('student_camera') }}">Open Camera Feed</a>
+    </div>
+</section>
+
+<section class="student-list-section">
+    <h2>Available Quizzes</h2>
+    <div class="stack-list">
+        {% for quiz in open_quiz_list %}
+        <div class="list-card student-available-card">
+            <div>
+                <strong>{{ quiz.title }}</strong>
+                <p>{{ quiz.subject }} &middot; {{ quiz.time_limit_minutes }} min &middot; {{ quiz.questions|length }} questions</p>
+            </div>
+            <a class="button primary" href="{{ url_for('take_quiz', quizId=quiz.id) }}">Take</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="student-list-section">
+    <h2>Quiz History</h2>
+    <div class="stack-list">
+        {% for item in summary.history %}
+        <div class="list-card student-history-card">
+            <div>
+                <strong>{{ item.title }}</strong>
+                <p>{{ item.subject }} &middot; {{ item.date }}</p>
+            </div>
+            <div class="student-history-score">
+                <strong class="{% if item.percentage >= 75 %}score-good{% elif item.percentage >= 50 %}score-mid{% else %}score-low{% endif %}">{{ item.percentage }}%</strong>
+                <span>{{ item.score_text }}</span>
+                <span class="status-pill published">{{ item.status }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Apply height styles for performance bars
+    document.querySelectorAll('[data-height]').forEach(el => {
+        el.style.height = el.dataset.height + '%';
+    });
+    // Apply width styles for progress bars
+    document.querySelectorAll('[data-width]').forEach(el => {
+        el.style.width = el.dataset.width + '%';
+    });
+});
+</script>
+{% endblock %}
